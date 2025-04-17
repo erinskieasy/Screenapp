@@ -12,7 +12,7 @@ export function HeroSection() {
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ backgroundImage: `url(${heroBackground})` }}
       >
-        <div className="absolute inset-0 bg-primary bg-opacity-10 backdrop-filter backdrop-blur-sm"></div>
+        
       </div>
       
       <motion.div
@@ -24,7 +24,7 @@ export function HeroSection() {
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1
             variants={fadeIn("up", 0)}
-            className="text-4xl md:text-6xl font-bold text-neutral-900 mb-6 leading-tight"
+            className="text-4xl md:text-6xl font-bold text-neutral-900 mb-6 leading-tight bg-white bg-opacity-70 inline-block"
           >
             Find the Job That Finds You.
           </motion.h1>
