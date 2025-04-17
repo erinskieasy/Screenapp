@@ -54,6 +54,9 @@ export function Footer() {
               <Link href="#" className="text-neutral-600 hover:text-primary transition-colors">
                 Contact Us
               </Link>
+              <Link href="/admin" className="text-neutral-600 hover:text-primary transition-colors">
+                Admin
+              </Link>
             </div>
             
             <div className="flex space-x-4">
