@@ -58,7 +58,7 @@ export default function AdminDashboard() {
   });
 
   // Effect to update state when settings data is loaded
-  React.useEffect(() => {
+  useEffect(() => {
     if (siteSettings?.success && siteSettings.settings) {
       setHeroTitle(siteSettings.settings.heroTitle || "");
       setHeroSubtitle(siteSettings.settings.heroSubtitle || "");
@@ -73,7 +73,7 @@ export default function AdminDashboard() {
   });
 
   // Effect to update state when social links data is loaded
-  React.useEffect(() => {
+  useEffect(() => {
     if (socialLinksData?.success && socialLinksData.links) {
       const fetchedLinks = socialLinksData.links;
       setSocialLinks((prevLinks) => {
