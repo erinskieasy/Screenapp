@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ScrollTo } from "@/components/ui/scroll-to";
-import { BriefcaseBusiness } from "lucide-react";
+import intellibusLogo from "../assets/intellibus-logo.png";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -26,7 +26,7 @@ export function Navbar() {
     <header className={`fixed w-full bg-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95' : ''}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
-          <img src="../assets/intellibus-logo.png" alt="Intellibus" className="h-8" />
+          <img src={intellibusLogo} alt="Intellibus" className="h-8" />
         </div>
         
         <nav className="hidden md:flex space-x-8">
