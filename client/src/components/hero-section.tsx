@@ -15,10 +15,26 @@ export function HeroSection() {
   // Get hero background image if it exists
   const heroBackgroundImage = getSetting("heroBackgroundImage");
   
-  // Determine background image URL
-  const backgroundImageUrl = heroBackgroundImage 
-    ? `/assets/${heroBackgroundImage}` 
-    : heroBackground;
+  // Import dynamically loaded images if available
+  // The uploaded images are stored in the assets directory and can be accessed
+  // using a relative import path
+  const determineBackgroundImage = () => {
+    if (!heroBackgroundImage) {
+      return heroBackground;
+    }
+
+    try {
+      // If we have a stored image path, use it
+      // For images uploaded through the admin panel, they will be in the assets directory
+      // and accessible via absolute URL path
+      return `/${heroBackgroundImage}`;
+    } catch (e) {
+      console.error("Error loading background image:", e);
+      return heroBackground;
+    }
+  };
+
+  const backgroundImageUrl = determineBackgroundImage();
 
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-24 relative">
