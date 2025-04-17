@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -17,6 +17,21 @@ export const waitlistEntries = pgTable("waitlist_entries", {
   createdAt: text("created_at").notNull()
 });
 
+export const siteSettings = pgTable("site_settings", {
+  id: serial("id").primaryKey(),
+  key: text("key").notNull().unique(),
+  value: text("value").notNull(),
+  updatedAt: text("updated_at").notNull()
+});
+
+export const socialLinks = pgTable("social_links", {
+  id: serial("id").primaryKey(),
+  platform: text("platform").notNull().unique(),
+  url: text("url").notNull(),
+  icon: text("icon").notNull(),
+  updatedAt: text("updated_at").notNull()
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -27,6 +42,17 @@ export const insertWaitlistSchema = createInsertSchema(waitlistEntries).pick({
   email: true,
   phone: true,
   role: true,
+});
+
+export const insertSiteSettingSchema = createInsertSchema(siteSettings).pick({
+  key: true,
+  value: true,
+});
+
+export const insertSocialLinkSchema = createInsertSchema(socialLinks).pick({
+  platform: true,
+  url: true,
+  icon: true,
 });
 
 export const waitlistFormSchema = insertWaitlistSchema.extend({
@@ -47,3 +73,9 @@ export type User = typeof users.$inferSelect;
 
 export type InsertWaitlistEntry = z.infer<typeof insertWaitlistSchema>;
 export type WaitlistEntry = typeof waitlistEntries.$inferSelect;
+
+export type InsertSiteSetting = z.infer<typeof insertSiteSettingSchema>;
+export type SiteSetting = typeof siteSettings.$inferSelect;
+
+export type InsertSocialLink = z.infer<typeof insertSocialLinkSchema>;
+export type SocialLink = typeof socialLinks.$inferSelect;
