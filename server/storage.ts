@@ -1,7 +1,6 @@
-import { users, type User, type InsertUser, type WaitlistEntry, type InsertWaitlistEntry } from "@shared/schema";
-
-// modify the interface with any CRUD methods
-// you might need
+import { users, waitlistEntries, type User, type InsertUser, type WaitlistEntry, type InsertWaitlistEntry } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -11,46 +10,42 @@ export interface IStorage {
   getWaitlistEntries(): Promise<WaitlistEntry[]>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private waitlist: Map<number, WaitlistEntry>;
-  currentId: number;
-  waitlistId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.waitlist = new Map();
-    this.currentId = 1;
-    this.waitlistId = 1;
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async addWaitlistEntry(entry: InsertWaitlistEntry & { createdAt: string }): Promise<WaitlistEntry> {
-    const id = this.waitlistId++;
-    const waitlistEntry: WaitlistEntry = { ...entry, id };
-    this.waitlist.set(id, waitlistEntry);
+    const [waitlistEntry] = await db
+      .insert(waitlistEntries)
+      .values({
+        fullName: entry.fullName,
+        email: entry.email,
+        phone: entry.phone || null,
+        role: entry.role,
+        createdAt: entry.createdAt
+      })
+      .returning();
     return waitlistEntry;
   }
 
   async getWaitlistEntries(): Promise<WaitlistEntry[]> {
-    return Array.from(this.waitlist.values());
+    return await db.select().from(waitlistEntries);
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
