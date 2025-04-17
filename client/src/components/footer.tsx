@@ -7,6 +7,7 @@ import { useSettings } from "@/hooks/use-settings";
 export function Footer() {
   const { getSetting } = useSettings();
   const siteName = getSetting("siteName", "TalentMatch");
+  const siteLogo = getSetting("siteLogo");
   
   // Fetch social links
   const { data: socialLinksData } = useQuery<any>({
@@ -38,9 +39,17 @@ export function Footer() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center">
-                <BriefcaseBusiness className="text-white h-5 w-5" />
-              </div>
+              {siteLogo ? (
+                <img 
+                  src={`/image/${siteLogo}`} 
+                  alt={siteName} 
+                  className="h-8 w-auto object-contain" 
+                />
+              ) : (
+                <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center">
+                  <BriefcaseBusiness className="text-white h-5 w-5" />
+                </div>
+              )}
               <span className="text-lg font-semibold text-neutral-900">{siteName}</span>
             </div>
             

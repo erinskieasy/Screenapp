@@ -10,8 +10,9 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { getSetting } = useSettings();
   
-  // Get site name with default
+  // Get site name and logo with defaults
   const siteName = getSetting("siteName", "TalentMatch AI");
+  const siteLogo = getSetting("siteLogo");
 
   // Add scroll listener to detect when the user scrolls
   useEffect(() => {
@@ -31,7 +32,19 @@ export function Navbar() {
     <header className={`fixed w-full bg-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95' : ''}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
-          <img src={intellibusLogo} alt={siteName} className="h-8" />
+          {siteLogo ? (
+            <img 
+              src={`/image/${siteLogo}`} 
+              alt={siteName} 
+              className="h-10 object-contain" 
+            />
+          ) : (
+            <img 
+              src={intellibusLogo} 
+              alt={siteName} 
+              className="h-8" 
+            />
+          )}
           <span className="ml-2 font-semibold text-xl">{siteName}</span>
         </div>
         

@@ -41,6 +41,7 @@ export default function AdminDashboard() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("hero");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [heroTitle, setHeroTitle] = useState("");
   const [heroSubtitle, setHeroSubtitle] = useState("");
   const [siteName, setSiteName] = useState("");
@@ -189,6 +190,38 @@ export default function AdminDashboard() {
     },
   });
 
+  // Upload site logo mutation
+  const uploadLogoMutation = useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch("/api/upload/site-logo", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to upload logo");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/settings"] });
+      setLogoFile(null);
+      toast({
+        title: "Logo uploaded",
+        description: "The site logo has been updated successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Upload failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSaveSetting = (key: string, value: string) => {
     updateSettingMutation.mutate({ key, value });
   };
@@ -203,9 +236,21 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleLogoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setLogoFile(event.target.files[0]);
+    }
+  };
+
   const handleUploadImage = () => {
     if (imageFile) {
       uploadImageMutation.mutate(imageFile);
+    }
+  };
+  
+  const handleUploadLogo = () => {
+    if (logoFile) {
+      uploadLogoMutation.mutate(logoFile);
     }
   };
 
@@ -382,6 +427,33 @@ export default function AdminDashboard() {
                     <Save className="h-4 w-4 mr-2" />
                   )}
                   Save Site Name
+                </Button>
+              </div>
+              
+              <Separator className="my-4" />
+              
+              <div className="space-y-2 pt-4">
+                <Label htmlFor="siteLogo">Site Logo</Label>
+                <Input
+                  id="siteLogo"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoFileChange}
+                />
+                <div className="text-sm text-muted-foreground mb-2">
+                  Upload a logo image to display in the navbar. Recommended size: 40px height.
+                </div>
+                <Button 
+                  variant="outline" 
+                  onClick={handleUploadLogo}
+                  disabled={!logoFile || uploadLogoMutation.isPending}
+                >
+                  {uploadLogoMutation.isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Upload className="h-4 w-4 mr-2" />
+                  )}
+                  Upload Logo
                 </Button>
               </div>
             </CardContent>
