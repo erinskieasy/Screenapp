@@ -25,8 +25,11 @@ export function Navbar() {
   return (
     <header className={`fixed w-full bg-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95' : ''}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center">
-          <img src="/src/assets/intellibus-logo.svg" alt="Intellibus" className="h-8" />
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center">
+            <BriefcaseBusiness className="text-white h-5 w-5" />
+          </div>
+          <span className="text-lg font-semibold text-neutral-900">TalentMatch</span>
         </div>
         
         <nav className="hidden md:flex space-x-8">
