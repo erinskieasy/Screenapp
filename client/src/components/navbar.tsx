@@ -2,11 +2,16 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ScrollTo } from "@/components/ui/scroll-to";
+import { useSettings } from "@/hooks/use-settings";
 import intellibusLogo from "../assets/intellibus-logo.png";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { getSetting } = useSettings();
+  
+  // Get site name with default
+  const siteName = getSetting("siteName", "TalentMatch AI");
 
   // Add scroll listener to detect when the user scrolls
   useEffect(() => {
