@@ -4,8 +4,12 @@ import { storage } from "./storage";
 import { insertWaitlistSchema } from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
+import { setupAuth } from "./auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Set up authentication
+  setupAuth(app);
+
   // Waitlist endpoint
   app.post("/api/waitlist", async (req, res) => {
     try {
@@ -42,6 +46,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(500).json({ 
         success: false, 
         message: "An error occurred while adding you to the waitlist" 
+      });
+    }
+  });
+
+  // Admin endpoint to get all waitlist entries
+  app.get("/api/waitlist", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required"
+      });
+    }
+    
+    try {
+      const entries = await storage.getWaitlistEntries();
+      return res.status(200).json({
+        success: true,
+        entries
+      });
+    } catch (error) {
+      console.error("Error fetching waitlist entries:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching waitlist entries"
       });
     }
   });
