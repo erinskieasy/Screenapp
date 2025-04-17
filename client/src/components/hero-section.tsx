@@ -26,8 +26,8 @@ export function HeroSection() {
     try {
       // If we have a stored image path, use it
       // For images uploaded through the admin panel, they will be in the assets directory
-      // and accessible via absolute URL path
-      return `/${heroBackgroundImage}`;
+      // and accessible via the /image route
+      return `/image/${heroBackgroundImage}`;
     } catch (e) {
       console.error("Error loading background image:", e);
       return heroBackground;

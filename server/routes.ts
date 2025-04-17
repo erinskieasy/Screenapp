@@ -295,6 +295,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Serve uploaded images from assets directory
+  app.use('/image', (req, res, next) => {
+    const imagePath = req.path;
+    const fullPath = path.join(uploadDir, imagePath);
+    
+    // Check if the file exists
+    if (fs.existsSync(fullPath)) {
+      res.sendFile(fullPath);
+    } else {
+      next();
+    }
+  });
+
   // Create HTTP server
   const httpServer = createServer(app);
 
