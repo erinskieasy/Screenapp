@@ -26,7 +26,7 @@ export function Navbar() {
     <header className={`fixed w-full bg-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95' : ''}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
-          <img src="/src/assets/intellibus-logo.png" alt="Intellibus" className="h-8" />
+          <img src="../assets/intellibus-logo.png" alt="Intellibus" className="h-8" />
         </div>
         
         <nav className="hidden md:flex space-x-8">
