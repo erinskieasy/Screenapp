@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Login successful",
         description: "You have been logged in successfully.",
       });
+      window.location.href = "/admin";
     },
     onError: (error: Error) => {
       toast({
