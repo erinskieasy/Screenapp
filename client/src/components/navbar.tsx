@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ScrollTo } from "@/components/ui/scroll-to";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useSettings } from "@/hooks/use-settings";
 import intellibusLogo from "../assets/intellibus-logo.png";
 
@@ -29,7 +30,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className={`fixed w-full bg-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95' : ''}`}>
+    <header className={`fixed w-full bg-white dark:bg-gray-900 dark:text-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95 dark:bg-opacity-95' : ''}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
           {siteLogo ? (
@@ -48,24 +49,27 @@ export function Navbar() {
           <span className="ml-2 font-semibold text-xl">{siteName}</span>
         </div>
         
-        <nav className="hidden md:flex space-x-8">
-          <ScrollTo targetId="how-it-works" className="text-neutral-600 hover:text-primary transition-colors">
+        <nav className="hidden md:flex items-center space-x-8">
+          <ScrollTo targetId="how-it-works" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
             How It Works
           </ScrollTo>
-          <ScrollTo targetId="benefits" className="text-neutral-600 hover:text-primary transition-colors">
+          <ScrollTo targetId="benefits" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
             Benefits
           </ScrollTo>
-          <ScrollTo targetId="join" className="text-neutral-600 hover:text-primary transition-colors">
+          <ScrollTo targetId="join" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
             Join Waitlist
           </ScrollTo>
+          <ThemeToggle />
         </nav>
         
-        <div className="md:hidden">
+        <div className="flex items-center md:hidden">
+          <ThemeToggle />
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
+            className="ml-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -86,25 +90,25 @@ export function Navbar() {
       </div>
       
       {/* Mobile menu */}
-      <div className={`md:hidden bg-white border-t border-neutral-100 shadow-sm ${mobileMenuOpen ? 'block' : 'hidden'}`}>
+      <div className={`md:hidden bg-white dark:bg-gray-900 border-t border-neutral-100 dark:border-gray-800 shadow-sm ${mobileMenuOpen ? 'block' : 'hidden'}`}>
         <div className="container mx-auto px-4 py-2 space-y-3">
           <ScrollTo
             targetId="how-it-works"
-            className="block py-2 text-neutral-600 hover:text-primary"
+            className="block py-2 text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary"
             onClick={() => setMobileMenuOpen(false)}
           >
             How It Works
           </ScrollTo>
           <ScrollTo
             targetId="benefits"
-            className="block py-2 text-neutral-600 hover:text-primary"
+            className="block py-2 text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary"
             onClick={() => setMobileMenuOpen(false)}
           >
             Benefits
           </ScrollTo>
           <ScrollTo
             targetId="join"
-            className="block py-2 text-neutral-600 hover:text-primary"
+            className="block py-2 text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary"
             onClick={() => setMobileMenuOpen(false)}
           >
             Join Waitlist
