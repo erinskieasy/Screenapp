@@ -45,6 +45,7 @@ export default function AdminDashboard() {
   const [heroTitle, setHeroTitle] = useState("");
   const [heroSubtitle, setHeroSubtitle] = useState("");
   const [siteName, setSiteName] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
   const [socialLinks, setSocialLinks] = useState([
     { platform: "linkedin", url: "", icon: "SiLinkedin" },
     { platform: "twitter", url: "", icon: "SiTwitter" },
@@ -64,6 +65,7 @@ export default function AdminDashboard() {
       setHeroTitle(siteSettings.settings.heroTitle || "");
       setHeroSubtitle(siteSettings.settings.heroSubtitle || "");
       setSiteName(siteSettings.settings.siteName || "");
+      setLogoUrl(siteSettings.settings.logoUrl || "");
     }
   }, [siteSettings]);
 
@@ -434,6 +436,25 @@ export default function AdminDashboard() {
               
               <div className="space-y-2 pt-4">
                 <Label htmlFor="siteLogo">Site Logo</Label>
+                
+                {logoUrl && (
+                  <div className="mb-4 p-4 border rounded-md bg-neutral-50 dark:bg-gray-800">
+                    <div className="text-sm font-medium mb-2">Current Logo:</div>
+                    <div className="flex items-center space-x-2">
+                      <div className="bg-white dark:bg-gray-700 p-2 rounded-md border shadow-sm">
+                        <img 
+                          src={logoUrl} 
+                          alt="Site Logo" 
+                          className="h-10 object-contain" 
+                        />
+                      </div>
+                      <span className="text-sm text-muted-foreground">
+                        {logoUrl.split('/').pop()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                
                 <Input
                   id="siteLogo"
                   type="file"
