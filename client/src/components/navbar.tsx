@@ -38,22 +38,22 @@ export function Navbar() {
   return (
     <header className={`fixed w-full bg-white dark:bg-gray-900 dark:text-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95 dark:bg-opacity-95' : ''}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center">
+        <Link href="/" className="flex items-center">
           {logoToUse ? (
             <img 
               src={`/image/${logoToUse}`} 
               alt={siteName} 
-              className="h-10 object-contain" 
+              className="h-10 object-contain cursor-pointer" 
             />
           ) : (
             <img 
               src={intellibusLogo} 
               alt={siteName} 
-              className="h-8" 
+              className="h-8 cursor-pointer" 
             />
           )}
           <span className="ml-2 font-semibold text-xl">{siteName}</span>
-        </div>
+        </Link>
         
         <nav className="hidden md:flex items-center space-x-8">
           <ScrollTo targetId="how-it-works" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">

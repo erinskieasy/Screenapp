@@ -44,20 +44,20 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
+            <Link href="/" className="flex items-center space-x-2 mb-4 md:mb-0">
               {logoToUse ? (
                 <img 
                   src={`/image/${logoToUse}`} 
                   alt={siteName} 
-                  className="h-8 w-auto object-contain" 
+                  className="h-8 w-auto object-contain cursor-pointer" 
                 />
               ) : (
-                <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center">
+                <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center cursor-pointer">
                   <BriefcaseBusiness className="text-white h-5 w-5" />
                 </div>
               )}
               <span className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{siteName}</span>
-            </div>
+            </Link>
             
             <div className="flex flex-col md:flex-row md:space-x-8 space-y-4 md:space-y-0 mb-6 md:mb-0 items-center">
               <Link href="#" className="text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors">
