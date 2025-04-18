@@ -4,16 +4,22 @@ import { Button } from "@/components/ui/button";
 import { ScrollTo } from "@/components/ui/scroll-to";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useSettings } from "@/hooks/use-settings";
+import { useTheme } from "next-themes";
 import intellibusLogo from "../assets/intellibus-logo.png";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { getSetting } = useSettings();
+  const { theme } = useTheme();
   
-  // Get site name and logo with defaults
+  // Get site name and logos with defaults
   const siteName = getSetting("siteName", "TalentMatch AI");
-  const siteLogo = getSetting("siteLogo");
+  const lightLogo = getSetting("siteLogo");
+  const darkLogo = getSetting("darkSiteLogo");
+  
+  // Decide which logo to use based on theme
+  const logoToUse = theme === "dark" && darkLogo ? darkLogo : lightLogo;
 
   // Add scroll listener to detect when the user scrolls
   useEffect(() => {
@@ -33,9 +39,9 @@ export function Navbar() {
     <header className={`fixed w-full bg-white dark:bg-gray-900 dark:text-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95 dark:bg-opacity-95' : ''}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center">
-          {siteLogo ? (
+          {logoToUse ? (
             <img 
-              src={`/image/${siteLogo}`} 
+              src={`/image/${logoToUse}`} 
               alt={siteName} 
               className="h-10 object-contain" 
             />

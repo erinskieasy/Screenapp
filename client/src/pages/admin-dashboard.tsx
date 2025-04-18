@@ -67,7 +67,7 @@ export default function AdminDashboard() {
       setHeroTitle(siteSettings.settings.heroTitle || "");
       setHeroSubtitle(siteSettings.settings.heroSubtitle || "");
       setSiteName(siteSettings.settings.siteName || "");
-      setLogoUrl(siteSettings.settings.logoUrl || "");
+      setLogoUrl(siteSettings.settings.siteLogo || "");
       setDarkLogoUrl(siteSettings.settings.darkSiteLogo || "");
     }
   }, [siteSettings]);
@@ -226,6 +226,38 @@ export default function AdminDashboard() {
       });
     },
   });
+  
+  // Upload dark mode site logo mutation
+  const uploadDarkLogoMutation = useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch("/api/upload/dark-site-logo", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to upload dark mode logo");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/settings"] });
+      setDarkLogoFile(null);
+      toast({
+        title: "Dark mode logo uploaded",
+        description: "The dark mode site logo has been updated successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Upload failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleSaveSetting = (key: string, value: string) => {
     updateSettingMutation.mutate({ key, value });
@@ -246,6 +278,12 @@ export default function AdminDashboard() {
       setLogoFile(event.target.files[0]);
     }
   };
+  
+  const handleDarkLogoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setDarkLogoFile(event.target.files[0]);
+    }
+  };
 
   const handleUploadImage = () => {
     if (imageFile) {
@@ -256,6 +294,12 @@ export default function AdminDashboard() {
   const handleUploadLogo = () => {
     if (logoFile) {
       uploadLogoMutation.mutate(logoFile);
+    }
+  };
+  
+  const handleUploadDarkLogo = () => {
+    if (darkLogoFile) {
+      uploadDarkLogoMutation.mutate(darkLogoFile);
     }
   };
 
@@ -438,15 +482,15 @@ export default function AdminDashboard() {
               <Separator className="my-4" />
               
               <div className="space-y-2 pt-4">
-                <Label htmlFor="siteLogo">Site Logo</Label>
+                <Label htmlFor="siteLogo">Light Mode Logo</Label>
                 
                 {logoUrl && (
                   <div className="mb-4 p-4 border rounded-md bg-neutral-50 dark:bg-gray-800">
-                    <div className="text-sm font-medium mb-2">Current Logo:</div>
+                    <div className="text-sm font-medium mb-2">Current Light Mode Logo:</div>
                     <div className="flex items-center space-x-2">
-                      <div className="bg-white dark:bg-gray-700 p-2 rounded-md border shadow-sm">
+                      <div className="bg-white p-2 rounded-md border shadow-sm">
                         <img 
-                          src={logoUrl} 
+                          src={`/image/${logoUrl}`} 
                           alt="Site Logo" 
                           className="h-10 object-contain" 
                         />
@@ -465,7 +509,7 @@ export default function AdminDashboard() {
                   onChange={handleLogoFileChange}
                 />
                 <div className="text-sm text-muted-foreground mb-2">
-                  Upload a logo image to display in the navbar. Recommended size: 40px height.
+                  Upload a logo image for light mode. Recommended size: 40px height.
                 </div>
                 <Button 
                   variant="outline" 
@@ -477,7 +521,53 @@ export default function AdminDashboard() {
                   ) : (
                     <Upload className="h-4 w-4 mr-2" />
                   )}
-                  Upload Logo
+                  Upload Light Mode Logo
+                </Button>
+              </div>
+              
+              <Separator className="my-4" />
+              
+              <div className="space-y-2 pt-4">
+                <Label htmlFor="darkSiteLogo">Dark Mode Logo</Label>
+                
+                {darkLogoUrl && (
+                  <div className="mb-4 p-4 border rounded-md bg-neutral-50 dark:bg-gray-800">
+                    <div className="text-sm font-medium mb-2">Current Dark Mode Logo:</div>
+                    <div className="flex items-center space-x-2">
+                      <div className="bg-gray-800 p-2 rounded-md border shadow-sm">
+                        <img 
+                          src={`/image/${darkLogoUrl}`} 
+                          alt="Dark Mode Site Logo" 
+                          className="h-10 object-contain" 
+                        />
+                      </div>
+                      <span className="text-sm text-muted-foreground">
+                        {darkLogoUrl.split('/').pop()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                
+                <Input
+                  id="darkSiteLogo"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleDarkLogoFileChange}
+                />
+                <div className="text-sm text-muted-foreground mb-2">
+                  Upload a logo image for dark mode. Recommended size: 40px height.
+                </div>
+                <Button 
+                  variant="outline" 
+                  onClick={handleUploadDarkLogo}
+                  disabled={!darkLogoFile || uploadDarkLogoMutation.isPending}
+                >
+                  {uploadDarkLogoMutation.isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Upload className="h-4 w-4 mr-2" />
+                  )}
+                  Upload Dark Mode Logo
                 </Button>
               </div>
             </CardContent>
