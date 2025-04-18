@@ -68,17 +68,6 @@ export function BenefitsSection() {
               <span className="text-neutral-700">Your data is secure and private. You control who sees your profile.</span>
             </div>
           </motion.div>
-          <motion.div
-            variants={fadeIn("up", 0.6)}
-            className="text-center mt-12"
-          >
-            <ScrollTo
-              targetId="join"
-              className="inline-block px-8 py-4 bg-primary hover:bg-primary-dark text-white font-medium rounded-md shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1"
-            >
-              Join the Waitlist
-            </ScrollTo>
-          </motion.div>
         </div>
       </motion.div>
     </section>

@@ -101,17 +101,6 @@ export function ValueProposition() {
                 </div>
               </div>
             </motion.div>
-            <motion.div
-              variants={fadeIn("up", 0.4)}
-              className="text-center mt-12"
-            >
-              <ScrollTo
-                targetId="join"
-                className="inline-block px-8 py-4 bg-primary hover:bg-primary-dark text-white font-medium rounded-md shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1"
-              >
-                Join the Waitlist
-              </ScrollTo>
-            </motion.div>
           </div>
         </div>
       </motion.div>
