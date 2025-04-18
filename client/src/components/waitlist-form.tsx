@@ -80,7 +80,7 @@ export function WaitlistForm() {
   };
 
   return (
-    <section id="join" className="py-20 bg-white">
+    <section id="join" className="py-20 bg-white dark:bg-gray-900">
       <motion.div
         variants={staggerContainer}
         initial="hidden"
@@ -93,8 +93,8 @@ export function WaitlistForm() {
             variants={fadeIn("up", 0.2)}
             className="text-center mb-10"
           >
-            <h2 className="text-3xl font-bold text-neutral-900 mb-3">Join the Waitlist</h2>
-            <p className="text-lg text-neutral-600">
+            <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Join the Waitlist</h2>
+            <p className="text-lg text-neutral-600 dark:text-neutral-400">
               Be among the first to experience the future of tech hiring. We'll send you an exclusive invite to our launch event.
             </p>
           </motion.div>

@@ -100,7 +100,7 @@ export function Footer() {
                   </a>
                   <a 
                     href="#" 
-                    className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-700 hover:bg-primary hover:text-white transition-colors"
+                    className="w-10 h-10 rounded-full bg-neutral-200 dark:bg-gray-800 flex items-center justify-center text-neutral-700 dark:text-neutral-300 hover:bg-primary hover:text-white transition-colors"
                     aria-label="Email"
                   >
                     <Mail className="h-5 w-5" />
@@ -110,8 +110,8 @@ export function Footer() {
             </div>
           </div>
           
-          <div className="mt-8 pt-6 border-t border-neutral-200 text-center">
-            <p className="text-neutral-500 text-sm">
+          <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-gray-800 text-center">
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm">
               &copy; {new Date().getFullYear()} {siteName}. All rights reserved.
             </p>
           </div>
