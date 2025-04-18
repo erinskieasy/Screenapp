@@ -49,6 +49,8 @@ export default function AdminDashboard() {
   const [siteName, setSiteName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [darkLogoUrl, setDarkLogoUrl] = useState("");
+  const [heroBackgroundUrl, setHeroBackgroundUrl] = useState("");
+  const [isHeroBackgroundVideo, setIsHeroBackgroundVideo] = useState(false);
   const [socialLinks, setSocialLinks] = useState([
     { platform: "linkedin", url: "", icon: "SiLinkedin" },
     { platform: "twitter", url: "", icon: "SiTwitter" },
@@ -70,6 +72,21 @@ export default function AdminDashboard() {
       setSiteName(siteSettings.settings.siteName || "");
       setLogoUrl(siteSettings.settings.siteLogo || "");
       setDarkLogoUrl(siteSettings.settings.darkSiteLogo || "");
+      
+      // Set hero background image/video URL
+      const bgUrl = siteSettings.settings.heroBackgroundImage || "";
+      setHeroBackgroundUrl(bgUrl);
+      
+      // Determine if it's a video based on file extension
+      if (bgUrl) {
+        const extension = bgUrl.split('.').pop()?.toLowerCase();
+        setIsHeroBackgroundVideo(
+          extension === 'mp4' || 
+          extension === 'webm' || 
+          extension === 'mov' || 
+          extension === 'ogg'
+        );
+      }
     }
   }, [siteSettings]);
 
@@ -422,6 +439,38 @@ export default function AdminDashboard() {
 
               <div className="space-y-2 pt-4">
                 <Label htmlFor="heroImage">Hero Background Media (Image or Video)</Label>
+                
+                {/* Preview current hero background */}
+                {heroBackgroundUrl && (
+                  <div className="mb-4 p-4 border rounded-md bg-neutral-50 dark:bg-gray-800">
+                    <div className="text-sm font-medium mb-2">Current Hero Background:</div>
+                    <div className="flex flex-col items-start space-y-2">
+                      {/* Display the appropriate preview based on file extension */}
+                      {isHeroBackgroundVideo ? (
+                        <div className="w-full max-w-md bg-black rounded-md overflow-hidden shadow-sm">
+                          <video 
+                            src={`/image/${heroBackgroundUrl}`}
+                            className="w-full h-auto max-h-48 object-cover"
+                            controls
+                            muted
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-full max-w-md bg-gray-100 dark:bg-gray-900 rounded-md overflow-hidden shadow-sm">
+                          <img 
+                            src={`/image/${heroBackgroundUrl}`}
+                            alt="Current Hero Background" 
+                            className="w-full h-auto max-h-48 object-cover" 
+                          />
+                        </div>
+                      )}
+                      <span className="text-sm text-muted-foreground">
+                        {heroBackgroundUrl.split('/').pop()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                
                 <Input
                   id="heroImage"
                   type="file"
