@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --primary-rgb: 0, 112, 240;
+  }
+
+  .dark {
+    --primary-rgb: 59, 130, 246;  
+  }
+
   * {
     @apply border-border;
   }
