@@ -10,9 +10,9 @@ export default function Home() {
     <div className="font-sans text-neutral-800 bg-white">
       <Navbar />
       <HeroSection />
+      <WaitlistForm />
       <ValueProposition />
       <BenefitsSection />
-      <WaitlistForm />
       <Footer />
     </div>
   );
