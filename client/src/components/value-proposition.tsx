@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Check, Building, User } from "lucide-react";
 import { fadeIn, staggerContainer } from "@/lib/animations";
+import { ScrollTo } from "@/components/ui/scroll-to";
+import { Button } from "@/components/ui/button";
 
 export function ValueProposition() {
   return (
@@ -27,7 +29,7 @@ export function ValueProposition() {
               <p className="text-lg text-neutral-600 mb-8 leading-relaxed">
                 We analyze your skills, experience, and preferences to create the perfect match between you and potential employers.
               </p>
-              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 mb-8">
                 <div className="flex items-center">
                   <div className="w-10 h-10 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mr-3">
                     <Check className="text-primary h-5 w-5" />
@@ -41,6 +43,12 @@ export function ValueProposition() {
                   <span className="text-neutral-700">93% matching accuracy</span>
                 </div>
               </div>
+              
+              <ScrollTo targetId="join">
+                <Button size="lg" className="bg-primary hover:bg-primary-dark text-white font-medium shadow-md hover:shadow-lg transition-all">
+                  Join the Waitlist
+                </Button>
+              </ScrollTo>
             </motion.div>
             
             <motion.div 

@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
-import { Bot, UserRoundCheck, Clock, Shield } from "lucide-react";
+import { Bot, UserRoundCheck, Clock, Shield, ArrowRight } from "lucide-react";
 import { fadeIn, staggerContainer } from "@/lib/animations";
+import { ScrollTo } from "@/components/ui/scroll-to";
+import { Button } from "@/components/ui/button";
 
 export function BenefitsSection() {
   const benefits = [
@@ -63,9 +65,18 @@ export function BenefitsSection() {
             variants={fadeIn("up", 0.5)}
             className="mt-16 text-center"
           >
-            <div className="inline-flex items-center bg-white px-6 py-3 rounded-lg shadow border border-neutral-200">
+            <div className="inline-flex items-center bg-white px-6 py-3 rounded-lg shadow border border-neutral-200 mb-8">
               <Shield className="text-neutral-500 mr-3 h-5 w-5" />
               <span className="text-neutral-700">Your data is secure and private. You control who sees your profile.</span>
+            </div>
+            
+            <div className="mt-6">
+              <ScrollTo targetId="join">
+                <Button size="lg" variant="outline" className="group border-primary text-primary hover:bg-primary hover:text-white font-medium transition-all">
+                  Join the Waitlist
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </ScrollTo>
             </div>
           </motion.div>
         </div>
