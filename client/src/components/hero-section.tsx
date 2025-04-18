@@ -50,10 +50,10 @@ export function HeroSection() {
   const backgroundMediaUrl = determineBackgroundMedia();
 
   return (
-    <section className="pt-32 pb-20 md:pt-40 md:pb-24 relative">
+    <section className="pt-32 pb-20 md:pt-40 md:pb-24 relative bg-slate-900">
       {/* Background Media with Overlay */}
       {isVideo ? (
-        <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-900">
           <video 
             className="absolute top-0 left-0 min-w-full min-h-full object-cover"
             autoPlay 
@@ -67,7 +67,7 @@ export function HeroSection() {
         </div>
       ) : (
         <div 
-          className="absolute inset-0 bg-cover bg-center z-0"
+          className="absolute inset-0 bg-cover bg-center z-0 bg-slate-900"
           style={{ backgroundImage: `url(${backgroundMediaUrl})` }}
         >
           {/* Additional overlay div for better text visibility */}

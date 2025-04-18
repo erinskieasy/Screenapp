@@ -477,8 +477,12 @@ export default function AdminDashboard() {
                   accept="image/*,video/*"
                   onChange={handleFileChange}
                 />
-                <div className="text-sm text-muted-foreground mb-2">
-                  You can upload an image (.jpg, .png, .gif) or video file (.mp4, .webm, .mov). Videos should be less than 50MB and ideally 10-30 seconds long.
+                <div className="text-sm text-muted-foreground mb-2 flex items-center">
+                  <span>You can upload an image (.jpg, .png, .gif) or video file (.mp4, .webm, .mov). Videos should be less than 50MB and ideally 10-30 seconds long.</span>
+                </div>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-6 h-6 rounded-full bg-slate-900 border border-gray-300 dark:border-gray-600 shadow-sm"></div>
+                  <span className="text-sm text-muted-foreground">Background color shown during media loading</span>
                 </div>
                 <Button 
                   variant="outline" 
