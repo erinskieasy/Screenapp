@@ -42,10 +42,12 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("hero");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [darkLogoFile, setDarkLogoFile] = useState<File | null>(null);
   const [heroTitle, setHeroTitle] = useState("");
   const [heroSubtitle, setHeroSubtitle] = useState("");
   const [siteName, setSiteName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
+  const [darkLogoUrl, setDarkLogoUrl] = useState("");
   const [socialLinks, setSocialLinks] = useState([
     { platform: "linkedin", url: "", icon: "SiLinkedin" },
     { platform: "twitter", url: "", icon: "SiTwitter" },
@@ -66,6 +68,7 @@ export default function AdminDashboard() {
       setHeroSubtitle(siteSettings.settings.heroSubtitle || "");
       setSiteName(siteSettings.settings.siteName || "");
       setLogoUrl(siteSettings.settings.logoUrl || "");
+      setDarkLogoUrl(siteSettings.settings.darkSiteLogo || "");
     }
   }, [siteSettings]);
 

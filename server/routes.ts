@@ -332,6 +332,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+  
+  // File upload endpoint for dark mode site logo
+  app.post("/api/upload/dark-site-logo", isAuthenticated, upload.single('image'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "No file uploaded"
+        });
+      }
+      
+      // Get the file path relative to assets directory
+      const filePath = req.file.filename;
+      
+      // Update site setting
+      await storage.upsertSiteSetting({
+        key: "darkSiteLogo",
+        value: filePath,
+        updatedAt: new Date().toISOString()
+      });
+      
+      return res.status(200).json({
+        success: true,
+        file: {
+          path: filePath,
+          filename: req.file.filename,
+          mimetype: req.file.mimetype,
+          size: req.file.size
+        }
+      });
+    } catch (error) {
+      console.error("Error uploading dark mode site logo:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while uploading dark mode site logo"
+      });
+    }
+  });
 
   // Serve uploaded images from assets directory
   app.use('/image', (req, res, next) => {
