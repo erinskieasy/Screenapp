@@ -25,7 +25,23 @@ const storage_multer = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage_multer });
+// File filter to allow images and videos
+const fileFilter = function(req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) {
+  // Accept images and videos
+  if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image and video files are allowed'));
+  }
+};
+
+const upload = multer({ 
+  storage: storage_multer,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB limit for videos
+  }
+});
 
 // Auth middleware
 const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
@@ -371,13 +387,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Serve uploaded images from assets directory
+  // Serve uploaded media (images and videos) from assets directory
   app.use('/image', (req, res, next) => {
-    const imagePath = req.path;
-    const fullPath = path.join(uploadDir, imagePath);
+    const mediaPath = req.path;
+    const fullPath = path.join(uploadDir, mediaPath);
     
     // Check if the file exists
     if (fs.existsSync(fullPath)) {
+      // Get file extension to set the correct content type
+      const ext = path.extname(fullPath).toLowerCase();
+      
+      // Set appropriate content type for common video formats
+      if (ext === '.mp4') {
+        res.setHeader('Content-Type', 'video/mp4');
+      } else if (ext === '.webm') {
+        res.setHeader('Content-Type', 'video/webm');
+      } else if (ext === '.mov') {
+        res.setHeader('Content-Type', 'video/quicktime');
+      } else if (ext === '.ogg') {
+        res.setHeader('Content-Type', 'video/ogg');
+      }
+      
       res.sendFile(fullPath);
     } else {
       next();

@@ -3,49 +3,77 @@ import { ScrollTo } from "@/components/ui/scroll-to";
 import { Button } from "@/components/ui/button";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useSettings } from "@/hooks/use-settings";
+import { useEffect, useState } from "react";
 import heroBackground from "../assets/hero-background.jpeg";
 
 export function HeroSection() {
   const { getSetting } = useSettings();
+  const [isVideo, setIsVideo] = useState(false);
   
   // Get hero settings with defaults
   const heroTitle = getSetting("heroTitle", "Find the Job That Finds You.");
   const heroSubtitle = getSetting("heroSubtitle", "Let AI match you with your next software engineering opportunity.");
   
-  // Get hero background image if it exists
-  const heroBackgroundImage = getSetting("heroBackgroundImage");
+  // Get hero background media if it exists
+  const heroBackgroundMedia = getSetting("heroBackgroundImage");
   
-  // Import dynamically loaded images if available
-  // The uploaded images are stored in the assets directory and can be accessed
-  // using a relative import path
-  const determineBackgroundImage = () => {
-    if (!heroBackgroundImage) {
+  // Determine if the background media is a video or image based on file extension
+  useEffect(() => {
+    if (heroBackgroundMedia) {
+      const extension = heroBackgroundMedia.split('.').pop()?.toLowerCase();
+      setIsVideo(
+        extension === 'mp4' || 
+        extension === 'webm' || 
+        extension === 'mov' || 
+        extension === 'ogg'
+      );
+    }
+  }, [heroBackgroundMedia]);
+  
+  // Import dynamically loaded media if available
+  const determineBackgroundMedia = () => {
+    if (!heroBackgroundMedia) {
       return heroBackground;
     }
 
     try {
-      // If we have a stored image path, use it
-      // For images uploaded through the admin panel, they will be in the assets directory
+      // If we have a stored media path, use it
+      // For media uploaded through the admin panel, it will be in the assets directory
       // and accessible via the /image route
-      return `/image/${heroBackgroundImage}`;
+      return `/image/${heroBackgroundMedia}`;
     } catch (e) {
-      console.error("Error loading background image:", e);
+      console.error("Error loading background media:", e);
       return heroBackground;
     }
   };
 
-  const backgroundImageUrl = determineBackgroundImage();
+  const backgroundMediaUrl = determineBackgroundMedia();
 
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-24 relative">
-      {/* Background Image with Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center z-0"
-        style={{ backgroundImage: `url(${backgroundImageUrl})` }}
-      >
-        {/* Additional overlay div for better text visibility */}
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-      </div>
+      {/* Background Media with Overlay */}
+      {isVideo ? (
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <video 
+            className="absolute top-0 left-0 min-w-full min-h-full object-cover"
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            src={backgroundMediaUrl}
+          />
+          {/* Additional overlay div for better text visibility */}
+          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        </div>
+      ) : (
+        <div 
+          className="absolute inset-0 bg-cover bg-center z-0"
+          style={{ backgroundImage: `url(${backgroundMediaUrl})` }}
+        >
+          {/* Additional overlay div for better text visibility */}
+          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        </div>
+      )}
       
       <motion.div
         variants={staggerContainer}

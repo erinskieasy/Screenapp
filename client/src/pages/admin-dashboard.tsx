@@ -421,13 +421,16 @@ export default function AdminDashboard() {
               <Separator className="my-4" />
 
               <div className="space-y-2 pt-4">
-                <Label htmlFor="heroImage">Hero Background Image</Label>
+                <Label htmlFor="heroImage">Hero Background Media (Image or Video)</Label>
                 <Input
                   id="heroImage"
                   type="file"
-                  accept="image/*"
+                  accept="image/*,video/*"
                   onChange={handleFileChange}
                 />
+                <div className="text-sm text-muted-foreground mb-2">
+                  You can upload an image (.jpg, .png, .gif) or video file (.mp4, .webm, .mov). Videos should be less than 50MB and ideally 10-30 seconds long.
+                </div>
                 <Button 
                   variant="outline" 
                   onClick={handleUploadImage}
@@ -438,7 +441,7 @@ export default function AdminDashboard() {
                   ) : (
                     <Upload className="h-4 w-4 mr-2" />
                   )}
-                  Upload Image
+                  Upload Media
                 </Button>
               </div>
             </CardContent>
