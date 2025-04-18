@@ -101,7 +101,7 @@ export function WaitlistForm() {
           
           <motion.div 
             variants={fadeIn("up", 0.3)}
-            className="bg-white p-8 md:p-10 rounded-lg shadow-lg border border-neutral-100"
+            className="bg-white dark:bg-gray-800 p-8 md:p-10 rounded-lg shadow-lg border border-neutral-100 dark:border-gray-700"
           >
             {!success ? (
               <Form {...form}>
@@ -182,18 +182,18 @@ export function WaitlistForm() {
                     {mutation.isPending ? "Submitting..." : "Join the Waitlist"}
                   </Button>
                   
-                  <div className="text-center text-sm text-neutral-500">
+                  <div className="text-center text-sm text-neutral-500 dark:text-neutral-400">
                     We'll send you an exclusive invite to our launch event.
                   </div>
                 </form>
               </Form>
             ) : (
               <div className="py-10 text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Check className="text-green-500 h-6 w-6" />
+                <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Check className="text-green-500 dark:text-green-400 h-6 w-6" />
                 </div>
-                <h3 className="text-2xl font-semibold text-neutral-900 mb-2">You're on the list!</h3>
-                <p className="text-neutral-600 mb-6">
+                <h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">You're on the list!</h3>
+                <p className="text-neutral-600 dark:text-neutral-400 mb-6">
                   Thank you for joining our waitlist. We'll be in touch soon with exclusive updates.
                 </p>
                 <Button 
