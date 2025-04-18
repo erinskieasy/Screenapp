@@ -3,11 +3,17 @@ import { BriefcaseBusiness, Linkedin, Twitter, Mail, Facebook, Instagram } from 
 import { useQuery } from "@tanstack/react-query";
 import { getQueryFn } from "@/lib/queryClient";
 import { useSettings } from "@/hooks/use-settings";
+import { useTheme } from "next-themes";
 
 export function Footer() {
   const { getSetting } = useSettings();
+  const { theme } = useTheme();
   const siteName = getSetting("siteName", "TalentMatch");
-  const siteLogo = getSetting("siteLogo");
+  const lightLogo = getSetting("siteLogo");
+  const darkLogo = getSetting("darkSiteLogo");
+  
+  // Decide which logo to use based on theme
+  const logoToUse = theme === "dark" && darkLogo ? darkLogo : lightLogo;
   
   // Fetch social links
   const { data: socialLinksData } = useQuery<any>({
@@ -39,9 +45,9 @@ export function Footer() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              {siteLogo ? (
+              {logoToUse ? (
                 <img 
-                  src={`/image/${siteLogo}`} 
+                  src={`/image/${logoToUse}`} 
                   alt={siteName} 
                   className="h-8 w-auto object-contain" 
                 />
