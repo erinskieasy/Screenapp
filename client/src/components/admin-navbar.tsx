@@ -2,8 +2,7 @@ import { Link } from "wouter";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useSettings } from "@/hooks/use-settings";
 import { useTheme } from "next-themes";
-import intellibusLogo from "../assets/intellibus-logo.png";
-import { LogOut } from "lucide-react";
+import { BriefcaseBusiness, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -35,11 +34,9 @@ export function AdminNavbar() {
               className="h-10 object-contain cursor-pointer" 
             />
           ) : (
-            <img 
-              src={intellibusLogo} 
-              alt={siteName} 
-              className="h-8 cursor-pointer" 
-            />
+            <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center cursor-pointer">
+              <BriefcaseBusiness className="text-white h-5 w-5" />
+            </div>
           )}
           <span className="ml-2 font-semibold text-xl">{siteName}</span>
         </Link>
