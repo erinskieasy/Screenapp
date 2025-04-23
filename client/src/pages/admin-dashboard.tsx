@@ -419,8 +419,11 @@ export default function AdminDashboard() {
                   value={heroSubtitle}
                   onChange={(e) => setHeroSubtitle(e.target.value)}
                   placeholder="Our AI algorithm matches you with recruiters looking for your exact skills and experience."
-                  rows={3}
+                  rows={5}
                 />
+                <div className="text-xs text-muted-foreground mt-1">
+                  Supports Markdown formatting. Use line breaks for paragraphs, *asterisks* for italics, **double asterisks** for bold, and - for bullet points.
+                </div>
                 <Button 
                   variant="outline" 
                   onClick={handleUpdateHeroSubtitle}

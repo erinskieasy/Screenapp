@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useSettings } from "@/hooks/use-settings";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import heroBackground from "../assets/hero-background.jpeg";
 
 export function HeroSection() {
@@ -89,12 +90,16 @@ export function HeroSection() {
             {heroTitle}
           </motion.h1>
           
-          <motion.p
+          <motion.div
             variants={fadeIn("up", 0.2)}
             className="text-xl md:text-2xl text-neutral-700 dark:text-neutral-300 mb-10 bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 px-4 py-2 rounded-md inline-block"
           >
-            {heroSubtitle}
-          </motion.p>
+            <div className="prose dark:prose-invert max-w-none prose-p:m-0 prose-p:leading-normal prose-headings:m-0">
+              <ReactMarkdown>
+                {heroSubtitle}
+              </ReactMarkdown>
+            </div>
+          </motion.div>
           
           <motion.div variants={fadeIn("up", 0.4)}>
             <ScrollTo
