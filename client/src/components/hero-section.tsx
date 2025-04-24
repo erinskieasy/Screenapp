@@ -81,7 +81,7 @@ export function HeroSection() {
   const backgroundMediaUrl = determineBackgroundMedia();
 
   return (
-    <section className="pt-32 pb-20 md:pt-40 md:pb-24 relative bg-slate-900">
+    <section className="min-h-screen relative bg-slate-900">
       {/* Loading Spinner */}
       {isMediaLoading && backgroundMediaUrl && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-slate-900">
@@ -138,7 +138,7 @@ export function HeroSection() {
         variants={staggerContainer}
         initial="hidden"
         animate="show"
-        className="container mx-auto px-4 relative z-10"
+        className="container mx-auto px-4 relative z-10 pt-32 pb-20 md:pt-40 md:pb-24"
       >
         <div className="max-w-4xl mx-auto text-center">
           <div className="relative">
