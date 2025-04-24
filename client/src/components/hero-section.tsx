@@ -85,14 +85,14 @@ export function HeroSection() {
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1
             variants={fadeIn("up", 0)}
-            className="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 leading-tight bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 inline-block"
+            className="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 leading-tight bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 px-4 py-6 rounded-md inline-block" 
           >
             {heroTitle}
           </motion.h1>
           
           <motion.div
             variants={fadeIn("up", 0.2)}
-            className="text-xl md:text-2xl text-neutral-700 dark:text-neutral-300 mb-10 bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 px-4 py-2 rounded-md block w-max mx-auto"
+            className="text-xl md:text-2xl text-neutral-700 dark:text-neutral-300 mb-10 bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 px-6 py-2 rounded-md flex md:w-max mx-auto break-words"
           >
             <div className="prose dark:prose-invert max-w-none prose-p:m-0 prose-p:leading-normal prose-headings:m-0">
               <ReactMarkdown>
@@ -110,44 +110,7 @@ export function HeroSection() {
             </ScrollTo>
           </motion.div>
           
-          {/* Simple animated background elements with reduced opacity */}
-          <div className="relative h-16 mt-16 overflow-hidden">
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute w-24 h-24 rounded-full bg-white dark:bg-gray-400 bg-opacity-30 dark:bg-opacity-20 -top-10 left-1/4"
-            />
-            <motion.div
-              animate={{
-                y: [0, -8, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1,
-              }}
-              className="absolute w-16 h-16 rounded-full bg-white dark:bg-gray-400 bg-opacity-30 dark:bg-opacity-20 top-0 left-1/2"
-            />
-            <motion.div
-              animate={{
-                y: [0, -12, 0],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2,
-              }}
-              className="absolute w-20 h-20 rounded-full bg-white dark:bg-gray-400 bg-opacity-30 dark:bg-opacity-20 -top-5 right-1/4"
-            />
-          </div>
+          
         </div>
       </motion.div>
     </section>
