@@ -141,12 +141,15 @@ export function HeroSection() {
         className="container mx-auto px-4 relative z-10"
       >
         <div className="max-w-4xl mx-auto text-center">
-          <motion.h1
-            variants={fadeIn("up", 0)}
-            className="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 leading-tight bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 inline-block"
-          >
-            {heroTitle}
-          </motion.h1>
+          <div className="relative">
+            <div className="absolute inset-0 bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80"></div>
+            <motion.h1
+              variants={fadeIn("up", 0)}
+              className="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 leading-tight bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 inline-block relative"
+            >
+              {heroTitle}
+            </motion.h1>
+          </div>
           
           <motion.div
             variants={fadeIn("up", 0.2)}
