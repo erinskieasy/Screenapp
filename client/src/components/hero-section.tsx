@@ -92,7 +92,7 @@ export function HeroSection() {
           
           <motion.div
             variants={fadeIn("up", 0.2)}
-            className="text-xl md:text-2xl text-neutral-700 dark:text-neutral-300 mb-10 bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 px-4 py-2 rounded-md block w-max"
+            className="text-xl md:text-2xl text-neutral-700 dark:text-neutral-300 mb-10 bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 px-4 py-2 rounded-md block w-max mx-auto"
           >
             <div className="prose dark:prose-invert max-w-none prose-p:m-0 prose-p:leading-normal prose-headings:m-0">
               <ReactMarkdown>
