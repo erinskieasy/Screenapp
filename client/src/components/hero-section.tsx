@@ -9,7 +9,7 @@ import heroBackground from "../assets/hero-background.jpeg";
 
 export function HeroSection() {
   const { getSetting } = useSettings();
-  const [isVideo, setIsVideo] = useState(false);
+  const [isMediaLoaded, setIsMediaLoaded] = useState(false);
 
   // Get hero settings with defaults
   const heroTitle = getSetting("heroTitle", "Find the Job That Finds You.");
@@ -18,31 +18,15 @@ export function HeroSection() {
   // Get hero background media if it exists
   const heroBackgroundMedia = getSetting("heroBackgroundImage");
 
-  // Determine if the background media is a video or image based on file extension
-  useEffect(() => {
-    if (heroBackgroundMedia) {
-      const extension = heroBackgroundMedia.split('.').pop()?.toLowerCase();
-      setIsVideo(
-        extension === 'mp4' || 
-        extension === 'webm' || 
-        extension === 'mov' || 
-        extension === 'ogg'
-      );
-    }
-  }, [heroBackgroundMedia]);
+  // Determine media type synchronously
+  const isVideo = heroBackgroundMedia ? 
+    ['mp4', 'webm', 'mov', 'ogg'].includes(heroBackgroundMedia.split('.').pop()?.toLowerCase() || '') : 
+    false;
 
   // Import dynamically loaded media if available
   const determineBackgroundMedia = () => {
     if (!heroBackgroundMedia) {
-      return (
-        <>
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-900 animate-pulse">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          </div>
-        </>
-      );
+      return heroBackground;
     }
 
     try {
@@ -60,9 +44,18 @@ export function HeroSection() {
 
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-24 relative bg-slate-900">
+      {/* Loading State */}
+      <div 
+        className={`absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-900 z-0 transition-opacity duration-500 ${isMediaLoaded ? 'opacity-0' : 'opacity-100'}`}
+      >
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </div>
+
       {/* Background Media with Overlay */}
       {isVideo ? (
-        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-900">
+        <div className={`absolute inset-0 z-0 overflow-hidden transition-opacity duration-500 ${isMediaLoaded ? 'opacity-100' : 'opacity-0'}`}>
           <video 
             className="absolute top-0 left-0 min-w-full min-h-full object-cover"
             autoPlay 
@@ -70,16 +63,16 @@ export function HeroSection() {
             loop 
             playsInline
             src={backgroundMediaUrl}
+            onLoadedData={() => setIsMediaLoaded(true)}
           />
-          {/* Additional overlay div for better text visibility */}
           <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         </div>
       ) : (
         <div 
-          className="absolute inset-0 bg-cover bg-center z-0 bg-slate-900"
+          className={`absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500 ${isMediaLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={{ backgroundImage: `url(${backgroundMediaUrl})` }}
+          onLoad={() => setIsMediaLoaded(true)}
         >
-          {/* Additional overlay div for better text visibility */}
           <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         </div>
       )}
