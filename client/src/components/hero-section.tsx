@@ -171,44 +171,7 @@ export function HeroSection() {
             </ScrollTo>
           </motion.div>
           
-          {/* Simple animated background elements with reduced opacity */}
-          <div className="relative h-16 mt-16 overflow-hidden">
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute w-24 h-24 rounded-full bg-white dark:bg-gray-400 bg-opacity-30 dark:bg-opacity-20 -top-10 left-1/4"
-            />
-            <motion.div
-              animate={{
-                y: [0, -8, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1,
-              }}
-              className="absolute w-16 h-16 rounded-full bg-white dark:bg-gray-400 bg-opacity-30 dark:bg-opacity-20 top-0 left-1/2"
-            />
-            <motion.div
-              animate={{
-                y: [0, -12, 0],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2,
-              }}
-              className="absolute w-20 h-20 rounded-full bg-white dark:bg-gray-400 bg-opacity-30 dark:bg-opacity-20 -top-5 right-1/4"
-            />
-          </div>
+         
         </div>
       </motion.div>
     </section>
