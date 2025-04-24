@@ -10,14 +10,14 @@ import heroBackground from "../assets/hero-background.jpeg";
 export function HeroSection() {
   const { getSetting } = useSettings();
   const [isVideo, setIsVideo] = useState(false);
-  
+
   // Get hero settings with defaults
   const heroTitle = getSetting("heroTitle", "Find the Job That Finds You.");
   const heroSubtitle = getSetting("heroSubtitle", "Let AI match you with your next software engineering opportunity.");
-  
+
   // Get hero background media if it exists
   const heroBackgroundMedia = getSetting("heroBackgroundImage");
-  
+
   // Determine if the background media is a video or image based on file extension
   useEffect(() => {
     if (heroBackgroundMedia) {
@@ -30,11 +30,19 @@ export function HeroSection() {
       );
     }
   }, [heroBackgroundMedia]);
-  
+
   // Import dynamically loaded media if available
   const determineBackgroundMedia = () => {
     if (!heroBackgroundMedia) {
-      return heroBackground;
+      return (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-900 animate-pulse">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          </div>
+        </>
+      );
     }
 
     try {
@@ -75,7 +83,7 @@ export function HeroSection() {
           <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         </div>
       )}
-      
+
       <motion.div
         variants={staggerContainer}
         initial="hidden"
@@ -89,7 +97,7 @@ export function HeroSection() {
           >
             {heroTitle}
           </motion.h1>
-          
+
           <motion.div
             variants={fadeIn("up", 0.2)}
             className="text-xl md:text-2xl text-neutral-700 dark:text-neutral-300 mb-10 bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 px-6 py-2 rounded-md flex md:w-max mx-auto break-words"
@@ -100,7 +108,7 @@ export function HeroSection() {
               </ReactMarkdown>
             </div>
           </motion.div>
-          
+
           <motion.div variants={fadeIn("up", 0.4)}>
             <ScrollTo
               targetId="join"
@@ -109,8 +117,8 @@ export function HeroSection() {
               Join the Waitlist
             </ScrollTo>
           </motion.div>
-          
-          
+
+
         </div>
       </motion.div>
     </section>
