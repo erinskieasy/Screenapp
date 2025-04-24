@@ -3,17 +3,13 @@ import { ScrollTo } from "@/components/ui/scroll-to";
 import { Button } from "@/components/ui/button";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useSettings } from "@/hooks/use-settings";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Loader2 } from "lucide-react";
+import heroBackground from "../assets/hero-background.jpeg";
 
 export function HeroSection() {
   const { getSetting } = useSettings();
   const [isVideo, setIsVideo] = useState(false);
-  const [isMediaLoaded, setIsMediaLoaded] = useState(false);
-  const [isMediaLoading, setIsMediaLoading] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
   
   // Get hero settings with defaults
   const heroTitle = getSetting("heroTitle", "Find the Job That Finds You.");
@@ -22,35 +18,9 @@ export function HeroSection() {
   // Get hero background media if it exists
   const heroBackgroundMedia = getSetting("heroBackgroundImage");
   
-  // Handle video loaded event
-  const handleVideoLoaded = () => {
-    setIsMediaLoaded(true);
-    setIsMediaLoading(false);
-  };
-  
-  // Handle video error event
-  const handleVideoError = () => {
-    setIsMediaLoading(false);
-    console.error("Error loading video");
-  };
-  
-  // Handle image loaded event
-  const handleImageLoaded = () => {
-    setIsMediaLoaded(true);
-    setIsMediaLoading(false);
-  };
-  
-  // Handle image error event
-  const handleImageError = () => {
-    setIsMediaLoading(false);
-    console.error("Error loading image");
-  };
-  
   // Determine if the background media is a video or image based on file extension
   useEffect(() => {
     if (heroBackgroundMedia) {
-      setIsMediaLoading(true);
-      setIsMediaLoaded(false);
       const extension = heroBackgroundMedia.split('.').pop()?.toLowerCase();
       setIsVideo(
         extension === 'mp4' || 
@@ -61,10 +31,10 @@ export function HeroSection() {
     }
   }, [heroBackgroundMedia]);
   
-  // Get the URL for the background media
+  // Import dynamically loaded media if available
   const determineBackgroundMedia = () => {
     if (!heroBackgroundMedia) {
-      return "";
+      return heroBackground;
     }
 
     try {
@@ -74,7 +44,7 @@ export function HeroSection() {
       return `/image/${heroBackgroundMedia}`;
     } catch (e) {
       console.error("Error loading background media:", e);
-      return "";
+      return heroBackground;
     }
   };
 
@@ -82,53 +52,25 @@ export function HeroSection() {
 
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-24 relative bg-slate-900">
-      {/* Loading Spinner */}
-      {isMediaLoading && backgroundMediaUrl && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-slate-900">
-          <div className="flex flex-col items-center space-y-4 bg-slate-800/50 backdrop-blur-sm p-6 rounded-lg">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="text-white text-center">Loading media...</p>
-          </div>
-        </div>
-      )}
-      
       {/* Background Media with Overlay */}
       {isVideo ? (
         <div className="absolute inset-0 z-0 overflow-hidden bg-slate-900">
-          {backgroundMediaUrl && (
-            <video 
-              ref={videoRef}
-              className="absolute top-0 left-0 min-w-full min-h-full object-cover"
-              autoPlay 
-              muted 
-              loop 
-              playsInline
-              src={backgroundMediaUrl}
-              onLoadedData={handleVideoLoaded}
-              onError={handleVideoError}
-            />
-          )}
+          <video 
+            className="absolute top-0 left-0 min-w-full min-h-full object-cover"
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            src={backgroundMediaUrl}
+          />
           {/* Additional overlay div for better text visibility */}
           <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         </div>
       ) : (
-        <div className="absolute inset-0 overflow-hidden z-0 bg-slate-900">
-          {backgroundMediaUrl && (
-            <>
-              <div 
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${backgroundMediaUrl})` }}
-              />
-              <img 
-                ref={imageRef}
-                src={backgroundMediaUrl}
-                alt="Background" 
-                className="opacity-0 absolute"
-                onLoad={handleImageLoaded}
-                onError={handleImageError}
-              />
-            </>
-          )}
+        <div 
+          className="absolute inset-0 bg-cover bg-center z-0 bg-slate-900"
+          style={{ backgroundImage: `url(${backgroundMediaUrl})` }}
+        >
           {/* Additional overlay div for better text visibility */}
           <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         </div>
@@ -141,15 +83,12 @@ export function HeroSection() {
         className="container mx-auto px-4 relative z-10"
       >
         <div className="max-w-4xl mx-auto text-center">
-          <div className="relative">
-            <div className="absolute inset-0 bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80"></div>
-            <motion.h1
-              variants={fadeIn("up", 0)}
-              className="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 leading-tight bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 inline-block relative"
-            >
-              {heroTitle}
-            </motion.h1>
-          </div>
+          <motion.h1
+            variants={fadeIn("up", 0)}
+            className="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 leading-tight bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-80 inline-block"
+          >
+            {heroTitle}
+          </motion.h1>
           
           <motion.div
             variants={fadeIn("up", 0.2)}
