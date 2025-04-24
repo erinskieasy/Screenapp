@@ -80,7 +80,7 @@ export function WaitlistForm() {
   };
 
   return (
-    <section id="join" className="py-20 bg-white dark:bg-gray-900">
+    <section id="join" className="py-20 bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-blue-900/50 dark:to-gray-900">
       <motion.div
         variants={staggerContainer}
         initial="show"
