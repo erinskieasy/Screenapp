@@ -12,12 +12,12 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { getSetting } = useSettings();
   const { theme } = useTheme();
-  
+
   // Get site name and logos with defaults
   const siteName = getSetting("siteName", "Screen App");
   const lightLogo = getSetting("siteLogo");
   const darkLogo = getSetting("darkSiteLogo");
-  
+
   // Decide which logo to use based on theme
   const logoToUse = theme === "dark" && darkLogo ? darkLogo : lightLogo;
 
@@ -36,7 +36,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className={`fixed w-full bg-white dark:bg-gray-900 dark:text-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95 dark:bg-opacity-95' : ''}`}>
+    <header className={`fixed w-full bg-white dark:bg-gray-950 dark:text-white z-50 transition-shadow duration-300 ${isScrolled ? 'shadow-sm bg-opacity-95 dark:bg-opacity-95' : ''}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           {logoToUse ? (
@@ -54,7 +54,7 @@ export function Navbar() {
           )}
           <span className="ml-2 font-semibold text-xl">{siteName}</span>
         </Link>
-        
+
         <nav className="hidden md:flex items-center space-x-8">
           <ScrollTo targetId="how-it-works" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
             How It Works
@@ -67,7 +67,7 @@ export function Navbar() {
           </ScrollTo>
           <ThemeToggle />
         </nav>
-        
+
         <div className="flex items-center md:hidden">
           <ThemeToggle />
           <Button
@@ -94,9 +94,9 @@ export function Navbar() {
           </Button>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
-      <div className={`md:hidden bg-white dark:bg-gray-900 border-t border-neutral-100 dark:border-gray-800 shadow-sm ${mobileMenuOpen ? 'block' : 'hidden'}`}>
+      <div className={`md:hidden bg-white dark:bg-gray-950 border-t border-neutral-100 dark:border-gray-800 shadow-sm ${mobileMenuOpen ? 'block' : 'hidden'}`}>
         <div className="container mx-auto px-4 py-2 space-y-3">
           <ScrollTo
             targetId="how-it-works"
