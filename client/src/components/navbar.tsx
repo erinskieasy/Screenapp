@@ -14,7 +14,7 @@ export function Navbar() {
   const { theme } = useTheme();
   
   // Get site name and logos with defaults
-  const siteName = getSetting("siteName", "TalentMatch AI");
+  const siteName = getSetting("siteName", "Screen App");
   const lightLogo = getSetting("siteLogo");
   const darkLogo = getSetting("darkSiteLogo");
   

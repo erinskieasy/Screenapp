@@ -83,7 +83,7 @@ export function WaitlistForm() {
     <section id="join" className="py-20 bg-white dark:bg-gray-900">
       <motion.div
         variants={staggerContainer}
-        initial="hidden"
+        initial="show"
         whileInView="show"
         viewport={{ once: true, amount: 0.25 }}
         className="container mx-auto px-4"
