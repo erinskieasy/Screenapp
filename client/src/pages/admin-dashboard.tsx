@@ -699,6 +699,7 @@ export default function AdminDashboard() {
                           <TableHead>Name</TableHead>
                           <TableHead>Email</TableHead>
                           <TableHead>Phone</TableHead>
+                          <TableHead>Parish</TableHead>
                           <TableHead>Role</TableHead>
                           <TableHead>Date</TableHead>
                         </TableRow>
@@ -709,6 +710,7 @@ export default function AdminDashboard() {
                             <TableCell>{entry.fullName}</TableCell>
                             <TableCell>{entry.email}</TableCell>
                             <TableCell>{entry.phone || "-"}</TableCell>
+                            <TableCell>{entry.parish || "-"}</TableCell>
                             <TableCell>{entry.role}</TableCell>
                             <TableCell>
                               {new Date(entry.createdAt).toLocaleDateString()}
