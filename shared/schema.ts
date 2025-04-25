@@ -13,6 +13,7 @@ export const waitlistEntries = pgTable("waitlist_entries", {
   fullName: text("full_name").notNull(),
   email: text("email").notNull().unique(),
   phone: text("phone"),
+  parish: text("parish"),
   role: text("role").notNull(),
   createdAt: text("created_at").notNull()
 });
@@ -41,6 +42,7 @@ export const insertWaitlistSchema = createInsertSchema(waitlistEntries).pick({
   fullName: true,
   email: true,
   phone: true,
+  parish: true,
   role: true,
 });
 
@@ -63,6 +65,7 @@ export const waitlistFormSchema = insertWaitlistSchema.extend({
     message: "Please enter a valid email address.",
   }),
   phone: z.string().optional(),
+  parish: z.string().optional(),
   role: z.string().min(1, {
     message: "Please select your current role.",
   }),

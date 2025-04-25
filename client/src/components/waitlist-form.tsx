@@ -32,6 +32,7 @@ type FormValues = {
   fullName: string;
   email: string;
   phone?: string;
+  parish?: string;
   role: string;
 };
 
@@ -45,6 +46,7 @@ export function WaitlistForm() {
       fullName: "",
       email: "",
       phone: "",
+      parish: "",
       role: "",
     },
   });
@@ -142,6 +144,20 @@ export function WaitlistForm() {
                         <FormLabel>Phone Number (optional)</FormLabel>
                         <FormControl>
                           <Input placeholder="(555) 123-4567" type="tel" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="parish"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Parish (optional)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter your parish" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
