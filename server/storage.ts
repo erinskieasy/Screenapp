@@ -83,6 +83,7 @@ export class DatabaseStorage implements IStorage {
         fullName: entry.fullName,
         email: entry.email,
         phone: entry.phone || null,
+        parish: entry.parish || null,
         role: entry.role,
         createdAt: entry.createdAt
       })

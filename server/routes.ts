@@ -72,6 +72,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         fullName: data.fullName,
         email: data.email,
         phone: data.phone,
+        parish: data.parish,
         role: data.role,
         createdAt: new Date().toISOString()
       });
@@ -121,9 +122,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const entries = await storage.getWaitlistEntries();
       
       // Convert to CSV
-      const header = "Full Name,Email,Phone,Role,Created At\n";
+      const header = "Full Name,Email,Phone,Parish,Role,Created At\n";
       const rows = entries.map(entry => {
-        return `"${entry.fullName}","${entry.email}","${entry.phone || ''}","${entry.role}","${entry.createdAt}"`;
+        return `"${entry.fullName}","${entry.email}","${entry.phone || ''}","${entry.parish || ''}","${entry.role}","${entry.createdAt}"`;
       }).join("\n");
       
       const csv = header + rows;
