@@ -3,6 +3,7 @@ import {
   waitlistEntries, 
   siteSettings, 
   socialLinks,
+  parishes,
   type User, 
   type InsertUser, 
   type WaitlistEntry, 
@@ -10,7 +11,9 @@ import {
   type SiteSetting,
   type InsertSiteSetting,
   type SocialLink,
-  type InsertSocialLink
+  type InsertSocialLink,
+  type Parish,
+  type InsertParish
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -41,6 +44,15 @@ export interface IStorage {
   getSocialLink(platform: string): Promise<SocialLink | undefined>;
   getAllSocialLinks(): Promise<SocialLink[]>;
   upsertSocialLink(link: InsertSocialLink & { updatedAt: string }): Promise<SocialLink>;
+  
+  // Parish operations
+  getParish(id: number): Promise<Parish | undefined>;
+  getParishByName(name: string): Promise<Parish | undefined>;
+  getAllParishes(): Promise<Parish[]>;
+  getActiveParishes(): Promise<Parish[]>;
+  createParish(parish: InsertParish & { createdAt: string }): Promise<Parish>;
+  updateParish(id: number, data: Partial<InsertParish>): Promise<Parish>;
+  deleteParish(id: number): Promise<boolean>;
   
   // Session store
   sessionStore: session.Store;
@@ -173,6 +185,54 @@ export class DatabaseStorage implements IStorage {
         .returning();
       return newLink;
     }
+  }
+  
+  // Parish operations
+  async getParish(id: number): Promise<Parish | undefined> {
+    const [parish] = await db.select().from(parishes).where(eq(parishes.id, id));
+    return parish || undefined;
+  }
+  
+  async getParishByName(name: string): Promise<Parish | undefined> {
+    const [parish] = await db.select().from(parishes).where(eq(parishes.name, name));
+    return parish || undefined;
+  }
+  
+  async getAllParishes(): Promise<Parish[]> {
+    return await db.select().from(parishes);
+  }
+  
+  async getActiveParishes(): Promise<Parish[]> {
+    return await db.select().from(parishes).where(eq(parishes.active, true));
+  }
+  
+  async createParish(parish: InsertParish & { createdAt: string }): Promise<Parish> {
+    const [newParish] = await db
+      .insert(parishes)
+      .values({
+        name: parish.name,
+        active: parish.active !== undefined ? parish.active : true,
+        createdAt: parish.createdAt
+      })
+      .returning();
+    return newParish;
+  }
+  
+  async updateParish(id: number, data: Partial<InsertParish>): Promise<Parish> {
+    const [updatedParish] = await db
+      .update(parishes)
+      .set(data)
+      .where(eq(parishes.id, id))
+      .returning();
+    return updatedParish;
+  }
+  
+  async deleteParish(id: number): Promise<boolean> {
+    const result = await db
+      .delete(parishes)
+      .where(eq(parishes.id, id))
+      .returning();
+    return result.length > 0;
   }
 }
 

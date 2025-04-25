@@ -415,6 +415,166 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Parish endpoints
+  app.get("/api/parishes", async (req, res) => {
+    try {
+      const parishes = await storage.getActiveParishes();
+      return res.status(200).json({
+        success: true,
+        parishes
+      });
+    } catch (error) {
+      console.error("Error fetching parishes:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching parishes"
+      });
+    }
+  });
+  
+  app.get("/api/parishes/all", isAuthenticated, async (req, res) => {
+    try {
+      const parishes = await storage.getAllParishes();
+      return res.status(200).json({
+        success: true,
+        parishes
+      });
+    } catch (error) {
+      console.error("Error fetching all parishes:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching all parishes"
+      });
+    }
+  });
+  
+  app.post("/api/parishes", isAuthenticated, async (req, res) => {
+    try {
+      const { name, active } = req.body;
+      
+      if (!name || typeof name !== 'string' || name.trim() === '') {
+        return res.status(400).json({
+          success: false,
+          message: "Parish name is required"
+        });
+      }
+      
+      // Check if parish already exists
+      const existingParish = await storage.getParishByName(name);
+      if (existingParish) {
+        return res.status(400).json({
+          success: false,
+          message: "A parish with this name already exists"
+        });
+      }
+      
+      const parish = await storage.createParish({
+        name,
+        active: active !== undefined ? active : true,
+        createdAt: new Date().toISOString()
+      });
+      
+      return res.status(201).json({
+        success: true,
+        parish
+      });
+    } catch (error) {
+      console.error("Error creating parish:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while creating the parish"
+      });
+    }
+  });
+  
+  app.put("/api/parishes/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid parish ID"
+        });
+      }
+      
+      const { name, active } = req.body;
+      const updateData: Partial<InsertParish> = {};
+      
+      if (name !== undefined) {
+        updateData.name = name;
+      }
+      
+      if (active !== undefined) {
+        updateData.active = active;
+      }
+      
+      // Check if parish exists
+      const existingParish = await storage.getParish(id);
+      if (!existingParish) {
+        return res.status(404).json({
+          success: false,
+          message: "Parish not found"
+        });
+      }
+      
+      // If changing name, make sure it doesn't conflict
+      if (name && name !== existingParish.name) {
+        const parishWithSameName = await storage.getParishByName(name);
+        if (parishWithSameName) {
+          return res.status(400).json({
+            success: false,
+            message: "A parish with this name already exists"
+          });
+        }
+      }
+      
+      const parish = await storage.updateParish(id, updateData);
+      
+      return res.status(200).json({
+        success: true,
+        parish
+      });
+    } catch (error) {
+      console.error(`Error updating parish:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while updating the parish"
+      });
+    }
+  });
+  
+  app.delete("/api/parishes/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid parish ID"
+        });
+      }
+      
+      const success = await storage.deleteParish(id);
+      
+      if (!success) {
+        return res.status(404).json({
+          success: false,
+          message: "Parish not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        message: "Parish deleted successfully"
+      });
+    } catch (error) {
+      console.error(`Error deleting parish:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while deleting the parish"
+      });
+    }
+  });
+
   // Create HTTP server
   const httpServer = createServer(app);
 

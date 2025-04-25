@@ -33,6 +33,13 @@ export const socialLinks = pgTable("social_links", {
   updatedAt: text("updated_at").notNull()
 });
 
+export const parishes = pgTable("parishes", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  active: boolean("active").notNull().default(true),
+  createdAt: text("created_at").notNull()
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -55,6 +62,11 @@ export const insertSocialLinkSchema = createInsertSchema(socialLinks).pick({
   platform: true,
   url: true,
   icon: true,
+});
+
+export const insertParishSchema = createInsertSchema(parishes).pick({
+  name: true,
+  active: true,
 });
 
 export const waitlistFormSchema = insertWaitlistSchema.extend({
@@ -82,3 +94,6 @@ export type SiteSetting = typeof siteSettings.$inferSelect;
 
 export type InsertSocialLink = z.infer<typeof insertSocialLinkSchema>;
 export type SocialLink = typeof socialLinks.$inferSelect;
+
+export type InsertParish = z.infer<typeof insertParishSchema>;
+export type Parish = typeof parishes.$inferSelect;
