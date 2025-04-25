@@ -797,6 +797,150 @@ export default function AdminDashboard() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="parishes" className="space-y-4 mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Parishes</CardTitle>
+              <CardDescription>
+                Manage the list of parishes available in the waitlist form
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <div className="flex-grow">
+                    <Input
+                      placeholder="Enter new parish name"
+                      value={newParishName}
+                      onChange={(e) => setNewParishName(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    onClick={handleCreateParish}
+                    disabled={!newParishName.trim() || createParishMutation.isPending}
+                  >
+                    {createParishMutation.isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    ) : (
+                      <Plus className="h-4 w-4 mr-2" />
+                    )}
+                    Add Parish
+                  </Button>
+                </div>
+                
+                <Separator className="my-4" />
+                
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Parish Name</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {parishesData?.parishes.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
+                            No parishes found. Add your first parish above.
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        parishesData?.parishes.map((parish: any) => (
+                          <TableRow key={parish.id}>
+                            <TableCell>
+                              {editingParishId === parish.id ? (
+                                <Input
+                                  value={editingParishName}
+                                  onChange={(e) => setEditingParishName(e.target.value)}
+                                  placeholder="Parish name"
+                                />
+                              ) : (
+                                parish.name
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleToggleParishActive(parish)}
+                                title={parish.active ? "Parish is active. Click to disable." : "Parish is inactive. Click to enable."}
+                                className={parish.active ? "text-green-500" : "text-gray-400"}
+                              >
+                                {parish.active ? (
+                                  <ToggleRight className="h-5 w-5" />
+                                ) : (
+                                  <ToggleLeft className="h-5 w-5" />
+                                )}
+                                <span className="ml-2">{parish.active ? "Active" : "Inactive"}</span>
+                              </Button>
+                            </TableCell>
+                            <TableCell className="text-right space-x-2">
+                              {editingParishId === parish.id ? (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={handleUpdateParish}
+                                    disabled={!editingParishName.trim() || updateParishMutation.isPending}
+                                  >
+                                    {updateParishMutation.isPending ? (
+                                      <Loader2 className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                      <Check className="h-4 w-4" />
+                                    )}
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={handleCancelEdit}
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => handleStartEditParish(parish)}
+                                  >
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                                    onClick={() => handleDeleteParish(parish.id)}
+                                    disabled={deleteParishMutation.isPending}
+                                  >
+                                    {deleteParishMutation.isPending && deleteParishMutation.variables === parish.id ? (
+                                      <Loader2 className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                      <Trash2 className="h-4 w-4" />
+                                    )}
+                                  </Button>
+                                </>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+                
+                <div className="text-sm text-muted-foreground">
+                  <p>
+                    Active parishes will appear in the dropdown on the waitlist form. Inactive parishes will not be shown.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="waitlist" className="space-y-4 mt-4">
           <Card>
             <CardHeader>
