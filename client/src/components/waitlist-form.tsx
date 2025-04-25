@@ -4,10 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { waitlistFormSchema } from "@shared/schema";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
+import { useParishes } from "@/hooks/use-parishes";
 
 import {
   Form,
@@ -39,6 +40,9 @@ type FormValues = {
 export function WaitlistForm() {
   const [success, setSuccess] = useState(false);
   const { toast } = useToast();
+  
+  // Fetch parishes for the dropdown
+  const { data: parishesData, isLoading: isLoadingParishes } = useParishes();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(waitlistFormSchema),
@@ -156,9 +160,37 @@ export function WaitlistForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Parish (optional)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter your parish" {...field} />
-                        </FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          disabled={isLoadingParishes}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select your parish" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {isLoadingParishes ? (
+                              <div className="flex items-center justify-center p-2">
+                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                <span>Loading parishes...</span>
+                              </div>
+                            ) : (
+                              <>
+                                <SelectItem value=" ">-- Select a parish --</SelectItem>
+                                {parishesData?.parishes.map((parish) => (
+                                  <SelectItem key={parish.id} value={parish.name}>
+                                    {parish.name}
+                                  </SelectItem>
+                                ))}
+                              </>
+                            )}
+                          </SelectContent>
+                        </Select>
+                        <FormDescription>
+                          Select the parish you are located in
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}

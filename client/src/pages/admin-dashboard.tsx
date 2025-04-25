@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
 import { AdminNavbar } from "@/components/admin-navbar";
 import { useToast } from "@/hooks/use-toast";
+import { useAllParishes } from "@/hooks/use-parishes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,6 +36,13 @@ import {
   Loader2,
   Link as LinkIcon,
   Globe,
+  Plus,
+  Edit,
+  Trash2,
+  Check,
+  X,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -51,6 +59,9 @@ export default function AdminDashboard() {
   const [darkLogoUrl, setDarkLogoUrl] = useState("");
   const [heroBackgroundUrl, setHeroBackgroundUrl] = useState("");
   const [isHeroBackgroundVideo, setIsHeroBackgroundVideo] = useState(false);
+  const [newParishName, setNewParishName] = useState("");
+  const [editingParishId, setEditingParishId] = useState<number | null>(null);
+  const [editingParishName, setEditingParishName] = useState("");
   const [socialLinks, setSocialLinks] = useState([
     { platform: "linkedin", url: "", icon: "SiLinkedin" },
     { platform: "twitter", url: "", icon: "SiTwitter" },
@@ -118,6 +129,9 @@ export default function AdminDashboard() {
     queryKey: ["/api/waitlist"],
     queryFn: getQueryFn({ on401: "throw" }),
   });
+  
+  // Fetch parishes
+  const { data: parishesData, isLoading: isLoadingParishes } = useAllParishes();
 
   // Update site setting mutation
   const updateSettingMutation = useMutation({
@@ -356,8 +370,112 @@ export default function AdminDashboard() {
     });
   };
 
+  // Create parish mutation
+  const createParishMutation = useMutation({
+    mutationFn: async (name: string) => {
+      const res = await apiRequest("POST", "/api/parishes", { name });
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/parishes/all"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/parishes"] });
+      setNewParishName("");
+      toast({
+        title: "Parish created",
+        description: "The parish has been created successfully."
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Creation failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Update parish mutation
+  const updateParishMutation = useMutation({
+    mutationFn: async ({ id, name, active }: { id: number, name?: string, active?: boolean }) => {
+      const res = await apiRequest("PUT", `/api/parishes/${id}`, { name, active });
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/parishes/all"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/parishes"] });
+      setEditingParishId(null);
+      setEditingParishName("");
+      toast({
+        title: "Parish updated",
+        description: "The parish has been updated successfully."
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Update failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Delete parish mutation
+  const deleteParishMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await apiRequest("DELETE", `/api/parishes/${id}`, {});
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/parishes/all"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/parishes"] });
+      toast({
+        title: "Parish deleted",
+        description: "The parish has been deleted successfully."
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Deletion failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  });
+  
+  const handleCreateParish = () => {
+    if (newParishName.trim()) {
+      createParishMutation.mutate(newParishName);
+    }
+  };
+  
+  const handleStartEditParish = (parish: any) => {
+    setEditingParishId(parish.id);
+    setEditingParishName(parish.name);
+  };
+  
+  const handleUpdateParish = () => {
+    if (editingParishId && editingParishName.trim()) {
+      updateParishMutation.mutate({ id: editingParishId, name: editingParishName });
+    }
+  };
+  
+  const handleCancelEdit = () => {
+    setEditingParishId(null);
+    setEditingParishName("");
+  };
+  
+  const handleToggleParishActive = (parish: any) => {
+    updateParishMutation.mutate({ id: parish.id, active: !parish.active });
+  };
+  
+  const handleDeleteParish = (id: number) => {
+    if (confirm("Are you sure you want to delete this parish?")) {
+      deleteParishMutation.mutate(id);
+    }
+  };
+
   const isLoading =
-    isLoadingSettings || isLoadingSocialLinks || isLoadingWaitlist;
+    isLoadingSettings || isLoadingSocialLinks || isLoadingWaitlist || isLoadingParishes;
 
   if (isLoading) {
     return (
@@ -374,10 +492,11 @@ export default function AdminDashboard() {
         <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
 
       <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="hero">Hero Section</TabsTrigger>
           <TabsTrigger value="branding">Branding</TabsTrigger>
           <TabsTrigger value="footer">Footer & Social</TabsTrigger>
+          <TabsTrigger value="parishes">Parishes</TabsTrigger>
           <TabsTrigger value="waitlist">Waitlist Entries</TabsTrigger>
         </TabsList>
 

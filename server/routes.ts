@@ -1,7 +1,7 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertWaitlistSchema, insertSiteSettingSchema, insertSocialLinkSchema } from "@shared/schema";
+import { insertWaitlistSchema, insertSiteSettingSchema, insertSocialLinkSchema, type InsertParish } from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { setupAuth } from "./auth";
