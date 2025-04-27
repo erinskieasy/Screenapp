@@ -55,6 +55,17 @@ export function WaitlistForm() {
     },
   });
 
+  React.useEffect(() => {
+    const prefillEmail = sessionStorage.getItem('prefillEmail');
+    if (prefillEmail) {
+      form.setValue('email', prefillEmail, {
+        shouldValidate: true,
+        shouldDirty: true
+      });
+      sessionStorage.removeItem('prefillEmail');
+    }
+  }, [form.setValue]);
+
   const mutation = useMutation({
     mutationFn: async (data: FormValues) => {
       const response = await apiRequest("POST", "/api/waitlist", data);
