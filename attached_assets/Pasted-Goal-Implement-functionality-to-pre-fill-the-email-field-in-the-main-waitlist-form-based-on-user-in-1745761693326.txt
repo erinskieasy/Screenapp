@@ -1,0 +1,54 @@
+Goal: Implement functionality to pre-fill the email field in the main waitlist form based on user input from a separate mini-form located in the hero section of the landing page. This pre-filling should only occur when the user explicitly submits the hero mini-form. Navigating to the waitlist form via other means (like scrolling or other buttons) should not trigger this pre-fill.
+
+Context:
+
+We have two relevant components/sections:
+A "Hero Mini-Form" (a simple form with an email input and submit button).
+A "Waitlist Form" (a more complex form built using react-hook-form).
+These two forms are likely in separate components and do not share direct parent-child state.
+Submitting the Hero Mini-Form currently scrolls the user down to the Waitlist Form section (id="join").
+Chosen Method: Use the browser's sessionStorage API to temporarily store the email address when the mini-form is submitted, and then retrieve it in the waitlist form component to update its state.
+
+Implementation Steps:
+
+Modify the Hero Mini-Form Component's onSubmit Handler:
+
+Inside the existing onSubmit function:
+Ensure e.preventDefault() is called.
+Get the current value from the email input field within this mini-form (e.g., access it via e.target or its id/name).
+Before the scrollIntoView call:
+Check if the retrieved email value is not empty.
+If it has a value, store it in sessionStorage using the key 'prefillEmail':
+JavaScript
+
+sessionStorage.setItem('prefillEmail', emailValue);
+If the retrieved email value is empty, ensure any previous value under that key is removed (to handle cases where the user clears the input and submits):
+JavaScript
+
+sessionStorage.removeItem('prefillEmail');
+Keep the existing document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' }); logic at the end of the handler.
+Modify the Waitlist Form Component (the one using react-hook-form):
+
+Import useEffect from react.
+Ensure you have access to the setValue function from your useForm hook instance (e.g., const { control, handleSubmit, setValue } = useForm(...)).
+Add a useEffect hook that runs when the component mounts. Include setValue in its dependency array ([setValue]).
+Inside this useEffect:
+Attempt to retrieve the email value from sessionStorage using the exact same key ('prefillEmail'):
+JavaScript
+
+const prefillEmail = sessionStorage.getItem('prefillEmail');
+Check if prefillEmail is not null (meaning the item was found).
+If it exists:
+Use the setValue function from react-hook-form to update the 'email' field's value in the form's state:
+JavaScript
+
+// It's good practice to include options like shouldValidate or shouldDirty
+setValue('email', prefillEmail, {
+    shouldValidate: true, // Optional: run validation after setting
+    shouldDirty: true     // Optional: mark the field as 'dirty' (modified)
+});
+Immediately after calling setValue, remove the item from sessionStorage to ensure it's only used once per mini-form submission:
+JavaScript
+
+sessionStorage.removeItem('prefillEmail');
+Outcome: After implementing these steps, submitting the hero mini-form with an email address will cause the page to scroll to the waitlist form, and the waitlist form's email field (managed by react-hook-form) will be automatically populated with that address. Submitting the mini-form with an empty email or navigating to the waitlist form otherwise will leave the waitlist form's email field in its default state.
