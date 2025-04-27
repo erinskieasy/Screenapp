@@ -1,0 +1,59 @@
+Looking at the element:
+
+HTML
+
+<button type="button" role="combobox" ... data-state="closed" ... class="flex h-10 w-full ... bg-background ... text-sm ...">
+  <span data-component-name="SelectValue" style="pointer-events: none;">Westmoreland</span>
+  <svg ...></svg>
+</button>
+Key Observations:
+
+It confirms the element is a <button> with role="combobox" and data-state="closed".
+The selected text ("Westmoreland") is indeed inside a direct child <span>.
+This specific span has data-component-name="SelectValue".
+The attribute data-radix-select-trigger is not present on the button in this snippet. This is likely why the previous selector (.dark [data-radix-select-trigger] span) didn't work!
+Revised CSS Selector:
+
+Let's use the attributes we do see to create a more accurate and specific selector. We'll target the button using its role and state, then the specific span inside using its data attribute.
+
+Please replace the previous CSS rule for the trigger's span with this one in your global CSS file:
+
+CSS
+
+@layer base { /* Or try @layer components if base has issues */
+
+  /* ... your other base styles ... */
+
+  .dark input,
+  .dark textarea {
+    @apply text-neutral-100;
+  }
+
+  /* --- REMOVE or REPLACE the old rule targeting [data-radix-select-trigger] span --- */
+
+  /* --- ADD THIS NEW RULE --- */
+  /* Target the span with data-component-name="SelectValue" */
+  /* inside the button acting as a closed combobox trigger */
+  .dark button[role="combobox"][data-state="closed"] > span[data-component-name="SelectValue"] {
+     @apply text-neutral-100; /* Or try text-white */
+     /* As another option, try inheriting the main foreground color which should be light in dark mode */
+     /* @apply text-foreground; */
+  }
+
+  /* --- Keep other rules if they work, but verify attributes via inspection --- */
+  /* Example: Inspect the dropdown popover to see if it actually has data-radix-select-content */
+  .dark [data-radix-select-content] { /* Verify this attribute exists */
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  /* Example: Inspect an item in the dropdown to see if it actually has data-radix-select-item */
+  .dark [data-radix-select-item] { /* Verify this attribute exists */
+    @apply text-neutral-100 hover:bg-gray-700 focus:bg-gray-700;
+  }
+
+}
+Explanation:
+
+.dark button[role="combobox"][data-state="closed"]: Selects the specific trigger button only when it's closed and in dark mode.
+> span[data-component-name="SelectValue"]: Selects only the direct child span that is identified as the SelectValue.
+@apply text-neutral-100;: Sets the desired light text color. Try text-white or text-foreground if text-neutral-100 doesn't yield the right shade.
