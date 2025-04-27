@@ -86,7 +86,7 @@ export function HeroSection() {
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1
             variants={fadeIn("up", 0)}
-            className="text-4xl md:text-6xl font-bold text-neutral-100 mb-6 leading-tight bg-gray-900 bg-opacity-0 px-4 py-6 rounded-md inline-block" 
+            className="font-display text-4xl leading-[2.75rem] tracking-[-0.033em] sm:text-5xl sm:leading-[3.125rem] sm:tracking-[-0.0435em] md:text-[72px] md:leading-[4rem] text-neutral-100 font-medium" 
           >
             {heroTitle}
           </motion.h1>
