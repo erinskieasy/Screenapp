@@ -20,8 +20,26 @@
   }
 
   .dark input,
-  .dark textarea,
-  .dark select {
+  .dark textarea {
     @apply text-neutral-100;
+  }
+
+  /* Style the select trigger button and its text in dark mode */
+  .dark [data-radix-select-trigger] {
+    @apply bg-gray-800 border-gray-700;
+  }
+  
+  .dark [data-radix-select-trigger] span {
+    @apply text-neutral-100;
+  }
+
+  /* Style the dropdown content in dark mode */
+  .dark [data-radix-select-content] {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  /* Style the dropdown items in dark mode */
+  .dark [data-radix-select-item] {
+    @apply text-neutral-100 hover:bg-gray-700 focus:bg-gray-700;
   }
 }
