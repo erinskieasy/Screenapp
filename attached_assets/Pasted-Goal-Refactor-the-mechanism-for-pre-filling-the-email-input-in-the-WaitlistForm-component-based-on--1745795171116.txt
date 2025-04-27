@@ -1,0 +1,66 @@
+Goal: Refactor the mechanism for pre-filling the email input in the WaitlistForm component based on submissions from the separate Hero Mini-Form component. Replace the current sessionStorage approach with an event bus pattern to resolve timing issues where the pre-fill wasn't applying immediately after the mini-form submission.
+
+Context:
+
+The previous attempt used sessionStorage, but due to the WaitlistForm likely being mounted before the mini-form submission, its useEffect (running only on mount) didn't pick up the stored value immediately.
+We will use a simple event emitter (pub/sub) pattern for reliable communication between these potentially decoupled components.
+The WaitlistForm uses react-hook-form.
+Implementation Steps:
+
+Install Dependency:
+
+Ensure the eventemitter3 library is installed. If not, add it:
+Bash
+
+npm install eventemitter3
+# or
+yarn add eventemitter3
+Create Shared Event Bus Instance:
+
+Create a new file (e.g., src/lib/eventBus.ts or .js).
+Define and export a singleton instance of EventEmitter:
+TypeScript
+
+// src/lib/eventBus.ts
+import EventEmitter from 'eventemitter3';
+
+export const appEventBus = new EventEmitter();
+Modify Hero Mini-Form Component:
+
+Import appEventBus from the new utility file (@/lib/eventBus).
+Locate the onSubmit handler for this form.
+Remove all code within the handler that interacts with sessionStorage (sessionStorage.setItem and sessionStorage.removeItem).
+After retrieving the email value (emailToPrefill) from the form's input field:
+Emit a custom event named 'prefillEmail' on the appEventBus, passing the emailToPrefill value as the payload:
+JavaScript
+
+console.log('[Hero Form] Emitting prefillEmail event with:', emailToPrefill); // Keep or add logging
+appEventBus.emit('prefillEmail', emailToPrefill);
+Ensure e.preventDefault() and the scrollIntoView logic remain.
+Modify WaitlistForm Component:
+
+Import useEffect from react.
+Import appEventBus from the utility file (@/lib/eventBus).
+Ensure the setValue function is available from your useForm hook instance.
+Remove the entire useEffect hook that previously handled reading from sessionStorage.
+Add a new useEffect hook with [setValue] as its dependency array.
+Inside this useEffect:
+Define a handler function (e.g., handlePrefillEmail) that takes one argument (the email value from the event).
+Inside handlePrefillEmail:
+Log that the event was received and the value.
+Check if the received email value is truthy (i.e., not empty or null).
+If it's truthy, call setValue('email', receivedEmailValue, { shouldValidate: true, shouldDirty: true });.
+(Optional: Consider adding logic here if you want to clear the email field when an empty string is received from the event).
+Subscribe to the 'prefillEmail' event when the effect runs (component mounts):
+JavaScript
+
+console.log('[Waitlist Form] Subscribing to prefillEmail event'); // Keep or add logging
+appEventBus.on('prefillEmail', handlePrefillEmail);
+Return a cleanup function from the useEffect to unsubscribe when the component unmounts:
+JavaScript
+
+return () => {
+  console.log('[Waitlist Form] Unsubscribing from prefillEmail event'); // Keep or add logging
+  appEventBus.off('prefillEmail', handlePrefillEmail);
+};
+Outcome: This refactoring will ensure that when the Hero Mini-Form is submitted, it emits an event. The WaitlistForm component, whenever it's mounted, will be listening for this event and will immediately update its email field using react-hook-form's setValue upon receiving the event, resolving the previous timing delay.
