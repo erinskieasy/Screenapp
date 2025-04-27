@@ -1,0 +1,92 @@
+Okay, let's break down this dark mode styling issue with the Select component.
+
+You're observing that after selecting an item in the dropdown (using the Select component, likely from shadcn/ui given the code), the displayed selected text in the trigger element is dark grey on a dark background, making it unreadable. Your custom CSS aims to fix this but isn't working.
+
+Analysis:
+
+Your Custom CSS Rule:
+
+CSS
+
+.dark input,
+.dark textarea,
+.dark select {
+  @apply text-neutral-100;
+}
+Your intention is clear: make the text light (text-neutral-100) for these form elements in dark mode.
+
+The SelectTrigger Component: Looking at the select.tsx code you provided (which is the standard shadcn/ui Select component built on Radix UI):
+
+The SelectTrigger component, which is the part you see after closing the dropdown, renders a <button> element (<SelectPrimitive.Trigger ...>), not a native <select> element.
+It applies various Tailwind classes, including bg-background and implicitly expects text color to be handled (usually by inheriting text-foreground).
+It renders the selected value using {children}, which typically includes the <SelectValue /> component. Radix UI's SelectValue often renders the actual text inside a <span>. The trigger itself has [&>span]:line-clamp-1, confirming it expects a span child.
+Why Your CSS Isn't Working (Most Likely Reason):
+
+Your CSS rule .dark select { ... } targets the native HTML <select> element. However, the component you are interacting with (SelectTrigger) renders as a <button> element in the DOM. Therefore, your CSS rule never applies to the element displaying the selected text.
+
+How Styling Works Here & Potential Conflicts:
+
+The SelectTrigger gets bg-background applied via Tailwind utility class.
+It should normally inherit or apply text-foreground based on your theme configuration. In dark mode, text-foreground should be a light color.
+The specific text color you see (dark grey) might be coming from:
+An incorrect text-foreground definition for dark mode in your Tailwind theme.
+A more specific Tailwind utility class applied by default within SelectTrigger or SelectValue that overrides the base text-foreground.
+The default browser styling for text inside a button, which isn't being properly overridden by Tailwind/shadcn styles in this specific state.
+How to Fix It:
+
+You need to target the correct element and apply the desired text color with sufficient specificity. Since modifying the library code directly isn't ideal, let's do it via CSS.
+
+Recommended Solution:
+
+Target the span element inside the SelectTrigger button specifically in dark mode. Radix UI often adds helpful data-* attributes we can use.
+
+Inspect the Element: Use your browser's developer tools to inspect the SelectTrigger element after you've selected a value in dark mode. Confirm it's a button and find the span inside that holds the selected text. Note any data-state or other relevant attributes on the button or the span.
+
+Add Specific CSS: Add the following rule to your global CSS file (e.g., src/app/globals.css). You can keep it in the @layer base or move it to @layer components if needed for specificity.
+
+CSS
+
+@layer base { /* Or try @layer components */
+  :root {
+    --primary-rgb: 0, 112, 240;
+    /* Ensure --foreground and --background are defined for light */
+    /* Example: --background: 0 0% 100%; --foreground: 0 0% 3.9%; */
+  }
+
+  .dark {
+    --primary-rgb: 59, 130, 246;
+    /* Ensure --foreground and --background are defined for dark */
+    /* Example: --background: 0 0% 3.9%; --foreground: 0 0% 98%; */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  /* --- Remove this rule --- */
+  /* .dark input,
+  .dark textarea,
+  .dark select {
+    @apply text-neutral-100;
+  } */
+
+  /* --- Add this rule instead --- */
+  /* Target the span inside the Radix Select Trigger when closed in dark mode, */
+  /* but specifically ignore the span when it's acting as a placeholder. */
+  .dark [data-radix-select-trigger][data-state="closed"] > span:not([data-placeholder]) {
+     @apply text-neutral-100; /* Or text-white or text-foreground if foreground is correctly defined as white/light */
+  }
+}
+Explanation of the New CSS Rule:
+
+.dark: Applies only in dark mode.
+[data-radix-select-trigger]: Targets the element Radix UI uses for the trigger (likely the button). You might need to adjust this based on your inspection if Radix uses a different attribute.
+[data-state="closed"]: Targets the trigger specifically when the dropdown is closed (which is when you see the selected value).
+> span: Targets the direct span child inside the trigger.
+:not([data-placeholder]): Ensures we don't apply this style to the span when it's displaying the placeholder text (which is usually handled by data-[placeholder]:text-muted-foreground on the trigger itself).
+@apply text-neutral-100;: Applies the desired light text color. You could also try text-white or even text-foreground if you ensure your --foreground variable is correctly set to a light color (like hsl(0 0% 98%)) in your dark theme configuration (tailwind.config.js or global CSS variables).
+By targeting the correct element (button > span) with appropriate state selectors, this CSS rule should be specific enough to override any conflicting styles and ensure your selected text is readable in dark mode. Remember to remove your old .dark select rule.
