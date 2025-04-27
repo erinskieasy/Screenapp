@@ -56,12 +56,17 @@ export function WaitlistForm() {
   });
 
   useEffect(() => {
+    console.log('[Waitlist Form] Checking sessionStorage for email');
     const prefillEmail = sessionStorage.getItem('prefillEmail');
+    console.log('[Waitlist Form] Found email in storage:', prefillEmail);
+    
     if (prefillEmail) {
+      console.log('[Waitlist Form] Setting email value:', prefillEmail);
       form.setValue('email', prefillEmail, {
         shouldValidate: true,
         shouldDirty: true
       });
+      console.log('[Waitlist Form] Removing email from sessionStorage');
       sessionStorage.removeItem('prefillEmail');
     }
   }, [form.setValue]);
