@@ -21,22 +21,7 @@
 
   .dark input,
   .dark textarea,
-  .dark select,
-  .dark select > option,
-  .dark [data-radix-select-trigger],
-  .dark [data-radix-select-content] {
+  .dark select {
     @apply text-neutral-100;
-  }
-
-  .dark [data-radix-select-content] {
-    @apply bg-gray-800 border-gray-700;
-  }
-
-  .dark [data-radix-select-item] {
-    @apply text-neutral-100 hover:bg-gray-700;
-  }
-
-  .dark [data-radix-select-item][data-highlighted] {
-    @apply bg-gray-700 text-neutral-100;
   }
 }
