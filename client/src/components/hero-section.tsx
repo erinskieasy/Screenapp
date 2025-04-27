@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ScrollTo } from "@/components/ui/scroll-to";
+import { appEventBus } from "@/lib/eventBus";
 import { Button } from "@/components/ui/button";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useSettings } from "@/hooks/use-settings";
