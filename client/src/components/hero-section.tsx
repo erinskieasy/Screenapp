@@ -102,13 +102,40 @@ export function HeroSection() {
             </div>
           </motion.div>
 
-          <motion.div variants={fadeIn("up", 0.4)}>
-            <ScrollTo
-              targetId="join"
-              className="inline-block px-8 py-4 bg-primary hover:bg-primary-dark text-white font-medium rounded-md shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1"
+          <motion.div variants={fadeIn("up", 0.4)} className="w-full max-w-xl mx-auto">
+            <form 
+              className="relative flex w-full flex-col items-center"
+              onSubmit={(e) => {
+                e.preventDefault();
+                document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
-              Join the Waitlist
-            </ScrollTo>
+              <div className="relative flex w-full items-center gap-2 py-2 pr-2 pl-4 rounded-xl bg-white transition-[box-shadow] duration-350 ease-in-out shadow-[var(--shadow-default)] hover:shadow-[var(--shadow-hover)] has-[input:focus]:shadow-[var(--shadow-focus)]" 
+                style={{
+                  '--shadow-default': '0px 0px 1.5px 0px rgba(24, 16, 14, 0.26), 0px 0px 0px 2px rgba(48, 90, 196, 0), 0px 12px 11px -8px rgba(24, 16, 14, 0.10), 0px 1px 3px 0px rgba(24, 16, 14, 0.10)',
+                  '--shadow-hover': '0px 0px 1.5px 0px rgba(24, 16, 14, 0.46), 0px 0px 0px 2px rgba(48, 90, 196, 0), 0px 12px 11px -8px rgba(24, 16, 14, 0.10), 0px 1px 3px 0px rgba(24, 16, 14, 0.10)',
+                  '--shadow-focus': '0px 0px 8px 1px rgba(48, 90, 196, 0.10), 0px 0px 0px 2px rgba(48, 90, 196, 0.20), 0px 2.5px 6px 0px rgba(24, 16, 14, 0.07), 0px 0px 2px 0px rgba(24, 16, 14, 0.20)',
+                  '--shadow-error': '0px 0px 8px 1px rgba(195, 97, 63, 0.80), 0px 0px 0px 2px rgba(195, 97, 63, 0.40), 0px 2.5px 6px 0px rgba(24, 16, 14, 0.07), 0px 0px 2px 0px rgba(24, 16, 14, 0.20)'
+                } as React.CSSProperties}
+              >
+                <input 
+                  id="contact-input" 
+                  className="min-w-0 flex-1 lg:text-sm placeholder:text-neutral-500/50 placeholder:text-sm bg-transparent outline-none" 
+                  type="email" 
+                  autoComplete="email" 
+                  placeholder="hi@company.com" 
+                  name="email"
+                />
+                <button 
+                  type="submit"
+                  className="px-3 py-[5px] inline-block rounded-md text-sm font-medium tracking-[-0.035px] transition-[background-color,box-shadow,color,outline] ease-out duration-150 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-3 bg-primary text-white shadow-[0px_1px_1px_0px_rgba(0,0,0,0.20),_0px_8px_4px_-8px_rgba(48,90,196,0.80),_0px_0px_0px_1px_#305AC4] hover:bg-primary-dark active:bg-primary-dark/90 active:shadow-[0px_1px_1px_0px_rgba(0,0,0,0),_0px_8px_4px_-8px_rgba(48,90,196,0),_0px_0px_0px_1px_#305AC4] active:text-white/[0.90]"
+                >
+                  <span className="grid *:col-start-1 *:row-start-1">
+                    <span>Join Waitlist</span>
+                  </span>
+                </button>
+              </div>
+            </form>
           </motion.div>
 
 
