@@ -107,8 +107,6 @@ export function HeroSection() {
               className="relative flex w-full flex-col items-center"
               onSubmit={(e) => {
                 e.preventDefault();
-                const emailInput = e.currentTarget.email.value;
-                window.localStorage.setItem('prefilledEmail', emailInput);
                 document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >

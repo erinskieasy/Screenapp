@@ -48,20 +48,12 @@ export function WaitlistForm() {
     resolver: zodResolver(waitlistFormSchema),
     defaultValues: {
       fullName: "",
-      email: window.localStorage.getItem('prefilledEmail') || "",
+      email: "",
       phone: "",
       parish: "",
       role: "",
     },
   });
-
-  React.useEffect(() => {
-    const prefilledEmail = window.localStorage.getItem('prefilledEmail');
-    if (prefilledEmail) {
-      form.setValue('email', prefilledEmail);
-      window.localStorage.removeItem('prefilledEmail');
-    }
-  }, []);
 
   const mutation = useMutation({
     mutationFn: async (data: FormValues) => {
