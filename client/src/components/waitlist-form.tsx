@@ -56,19 +56,24 @@ export function WaitlistForm() {
   });
 
   useEffect(() => {
-    console.log('[Waitlist Form] Checking sessionStorage for email');
-    const prefillEmail = sessionStorage.getItem('prefillEmail');
-    console.log('[Waitlist Form] Found email in storage:', prefillEmail);
+    console.log('[Waitlist Form] Subscribing to prefillEmail event');
     
-    if (prefillEmail) {
-      console.log('[Waitlist Form] Setting email value:', prefillEmail);
-      form.setValue('email', prefillEmail, {
-        shouldValidate: true,
-        shouldDirty: true
-      });
-      console.log('[Waitlist Form] Removing email from sessionStorage');
-      sessionStorage.removeItem('prefillEmail');
-    }
+    const handlePrefillEmail = (email: string) => {
+      console.log('[Waitlist Form] Received prefillEmail event with:', email);
+      if (email.trim()) {
+        form.setValue('email', email, {
+          shouldValidate: true,
+          shouldDirty: true
+        });
+      }
+    };
+
+    appEventBus.on('prefillEmail', handlePrefillEmail);
+
+    return () => {
+      console.log('[Waitlist Form] Unsubscribing from prefillEmail event');
+      appEventBus.off('prefillEmail', handlePrefillEmail);
+    };
   }, [form.setValue]);
 
   const mutation = useMutation({

@@ -111,11 +111,8 @@ export function HeroSection() {
                 console.log('[Hero Form] Email input value:', emailInput);
                 
                 if (emailInput.trim()) {
-                  console.log('[Hero Form] Storing email in sessionStorage:', emailInput);
-                  sessionStorage.setItem('prefillEmail', emailInput);
-                } else {
-                  console.log('[Hero Form] Email empty, removing from sessionStorage');
-                  sessionStorage.removeItem('prefillEmail');
+                  console.log('[Hero Form] Emitting prefillEmail event with:', emailInput);
+                  appEventBus.emit('prefillEmail', emailInput);
                 }
                 console.log('[Hero Form] Scrolling to waitlist form');
                 document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' });
