@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
@@ -55,7 +55,7 @@ export function WaitlistForm() {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const prefillEmail = sessionStorage.getItem('prefillEmail');
     if (prefillEmail) {
       form.setValue('email', prefillEmail, {
