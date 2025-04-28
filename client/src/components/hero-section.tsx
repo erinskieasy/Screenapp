@@ -129,7 +129,7 @@ export function HeroSection() {
               >
                 <input 
                   id="contact-input" 
-                  className="min-w-0 flex-1 lg:text-sm placeholder:text-neutral-500/50 placeholder:text-sm bg-transparent outline-none" 
+                  className="min-w-0 flex-1 lg:text-sm placeholder:text-neutral-500/50 placeholder:text-sm bg-transparent outline-none text-neutral-800" 
                   type="email" 
                   autoComplete="email" 
                   placeholder="hi@company.com" 
