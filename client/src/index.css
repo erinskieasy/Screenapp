@@ -23,6 +23,9 @@
   .dark textarea {
     @apply text-neutral-100;
   }
+  .dark input#contact-input { /* Target hero input by ID */
+    @apply text-neutral-800; /* Force dark text for this specific input */
+  }
 
   /* Style select in dark mode with correct selectors */
   .dark button[role="combobox"] {

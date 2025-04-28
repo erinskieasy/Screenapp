@@ -119,7 +119,7 @@ export function HeroSection() {
                 document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              <div className="relative flex w-full items-center gap-2 py-2 pr-2 pl-4 rounded-xl bg-white transition-[box-shadow] duration-350 ease-in-out shadow-[var(--shadow-default)] hover:shadow-[var(--shadow-hover)] has-[input:focus]:shadow-[var(--shadow-focus)]" 
+              <div className="relative flex w-full max-w-md items-center gap-2 py-2 pr-2 pl-4 rounded-xl bg-white transition-[box-shadow] duration-350 ease-in-out shadow-[var(--shadow-default)] hover:shadow-[var(--shadow-hover)] has-[input:focus]:shadow-[var(--shadow-focus)]" 
                 style={{
                   '--shadow-default': '0px 0px 1.5px 0px rgba(24, 16, 14, 0.26), 0px 0px 0px 2px rgba(48, 90, 196, 0), 0px 12px 11px -8px rgba(24, 16, 14, 0.10), 0px 1px 3px 0px rgba(24, 16, 14, 0.10)',
                   '--shadow-hover': '0px 0px 1.5px 0px rgba(24, 16, 14, 0.46), 0px 0px 0px 2px rgba(48, 90, 196, 0), 0px 12px 11px -8px rgba(24, 16, 14, 0.10), 0px 1px 3px 0px rgba(24, 16, 14, 0.10)',
