@@ -44,7 +44,7 @@ export function HeroSection() {
   const backgroundMediaUrl = determineBackgroundMedia();
 
   return (
-    <section className="pt-32 pb-20 md:pt-40 md:pb-24 relative bg-slate-900">
+    <section className="h-screen relative bg-slate-900 flex items-center">
       {/* Loading State */}
       <div 
         className={`absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-900 z-0 transition-opacity duration-500 ${isMediaLoaded ? 'opacity-0' : 'opacity-100'}`}
