@@ -84,7 +84,7 @@ export function HeroSection() {
         animate="show"
         className="container mx-auto px-4 relative z-10"
       >
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <motion.h1
             variants={fadeIn("up", 0)}
             className="font-display text-4xl leading-[2.75rem] tracking-[-0.033em] sm:text-5xl sm:leading-[3.125rem] sm:tracking-[-0.0435em] md:text-[72px] md:leading-[4rem] text-neutral-100 font-medium" 
