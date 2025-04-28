@@ -4,9 +4,169 @@ import { appEventBus } from "@/lib/eventBus";
 import { Button } from "@/components/ui/button";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useSettings } from "@/hooks/use-settings";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import heroBackground from "../assets/hero-background.jpeg";
+
+// Logo Ticker Component
+function LogoTicker() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [translateX, setTranslateX] = useState(0);
+  
+  // Sample partner logos as inline SVGs - in production, these would be loaded from a database or CMS
+  const partnerLogos = [
+    { 
+      id: 1, 
+      name: "Acme Inc", 
+      svg: (
+        <svg viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25 10L35 40H15L25 10Z" fill="currentColor" />
+          <path d="M45 25H75" stroke="currentColor" strokeWidth="4" />
+          <path d="M85 15H115V35H85V15Z" stroke="currentColor" strokeWidth="4" />
+        </svg>
+      )
+    },
+    { 
+      id: 2, 
+      name: "TechCorp", 
+      svg: (
+        <svg viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="30" height="30" rx="15" stroke="currentColor" strokeWidth="4"/>
+          <path d="M60 25H90" stroke="currentColor" strokeWidth="4" />
+          <path d="M100 10L130 40M100 40L130 10" stroke="currentColor" strokeWidth="4" />
+        </svg>
+      )
+    },
+    { 
+      id: 3, 
+      name: "Innovate Labs", 
+      svg: (
+        <svg viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 10V40M30 10V40M40 10V40" stroke="currentColor" strokeWidth="4" />
+          <circle cx="75" cy="25" r="15" fill="currentColor" />
+          <path d="M100 10H130V40H100V10Z" stroke="currentColor" strokeWidth="4" />
+        </svg>
+      )
+    },
+    { 
+      id: 4, 
+      name: "Quantum AI", 
+      svg: (
+        <svg viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 25C20 16.7157 26.7157 10 35 10C43.2843 10 50 16.7157 50 25C50 33.2843 43.2843 40 35 40C26.7157 40 20 33.2843 20 25Z" stroke="currentColor" strokeWidth="4"/>
+          <path d="M60 10L90 40M60 40L90 10" stroke="currentColor" strokeWidth="4" />
+          <path d="M110 15L110 35M100 25H120" stroke="currentColor" strokeWidth="4" />
+        </svg>
+      ) 
+    },
+    { 
+      id: 5, 
+      name: "Global Systems", 
+      svg: (
+        <svg viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="35" cy="25" r="15" stroke="currentColor" strokeWidth="4"/>
+          <path d="M60 10H90V40H60V10Z" stroke="currentColor" strokeWidth="4" />
+          <path d="M100 40L130 10M100 25H130M115 10V40" stroke="currentColor" strokeWidth="4" />
+        </svg>
+      )
+    },
+    { 
+      id: 6, 
+      name: "Future Tech", 
+      svg: (
+        <svg viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 10H50V25H35V40" stroke="currentColor" strokeWidth="4" />
+          <path d="M60 25C60 16.7157 66.7157 10 75 10C83.2843 10 90 16.7157 90 25C90 33.2843 83.2843 40 75 40C66.7157 40 60 33.2843 60 25Z" stroke="currentColor" strokeWidth="4"/>
+          <rect x="100" y="10" width="30" height="30" stroke="currentColor" strokeWidth="4"/>
+        </svg>
+      )
+    },
+    { 
+      id: 7, 
+      name: "Smart Solutions", 
+      svg: (
+        <svg viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 10C20 10 35 40 50 10" stroke="currentColor" strokeWidth="4" />
+          <circle cx="75" cy="25" r="15" fill="currentColor" />
+          <path d="M100 10L115 25L130 10M100 40L115 25L130 40" stroke="currentColor" strokeWidth="4" />
+        </svg>
+      )
+    },
+    { 
+      id: 8, 
+      name: "Connect Partners", 
+      svg: (
+        <svg viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="25" cy="25" r="10" fill="currentColor" />
+          <circle cx="125" cy="25" r="10" fill="currentColor" />
+          <path d="M35 25H115" stroke="currentColor" strokeWidth="4" strokeDasharray="8 4" />
+        </svg>
+      )
+    },
+  ];
+  
+  useEffect(() => {
+    if (!containerRef.current || !innerRef.current) return;
+    
+    // Set initial width 
+    const containerWidth = containerRef.current.offsetWidth;
+    const innerWidth = innerRef.current.scrollWidth;
+    
+    // Animation function for smooth scrolling
+    const animate = () => {
+      // Reset position when we've scrolled the full width
+      if (Math.abs(translateX) >= innerWidth / 2) {
+        setTranslateX(0);
+      } else {
+        // Move logos by 0.5px each frame
+        setTranslateX(prev => prev - 0.5);
+      }
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    // Start animation
+    const animationRef = { current: requestAnimationFrame(animate) };
+    
+    // Cleanup animation on unmount
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [translateX]);
+  
+  // Double the logos to create a seamless loop
+  const doubledLogos = [...partnerLogos, ...partnerLogos];
+  
+  return (
+    <div className="relative w-full overflow-hidden lg:[mask-image:linear-gradient(to_right,#0000,#000_64px,#000_calc(100%-64px),#0000)]" ref={containerRef}>
+      <div 
+        className="flex items-center gap-[40px] md:gap-[64px]"
+        ref={innerRef}
+        style={{ transform: `translateX(${translateX}px)` }}
+      >
+        <div className="flex shrink-0 gap-[40px] md:gap-[64px]">
+          {doubledLogos.map((logo, index) => (
+            <div 
+              key={`${logo.id}-${index}`} 
+              className="flex items-center justify-center w-[100px] h-[50px] md:w-[150px] md:h-[75px] bg-white/5 rounded-md overflow-hidden"
+            >
+              <img 
+                src={logo.logo}
+                alt={`${logo.name} logo`}
+                className="max-w-full max-h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
+                loading="lazy"
+                width="150"
+                height="75"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function HeroSection() {
   const { getSetting } = useSettings();
@@ -148,6 +308,19 @@ export function HeroSection() {
           </motion.div>
 
 
+        </div>
+      </motion.div>
+      
+      {/* Partners Logo Ticker */}
+      <motion.div 
+        variants={fadeIn("up", 0.6)}
+        className="absolute bottom-10 left-0 right-0 z-10"
+      >
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-4">
+            <h3 className="text-sm uppercase tracking-wider text-neutral-400 font-medium">Trusted by Leading Companies</h3>
+          </div>
+          <LogoTicker />
         </div>
       </motion.div>
     </section>
