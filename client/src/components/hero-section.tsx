@@ -151,15 +151,11 @@ function LogoTicker() {
             <div 
               key={`${logo.id}-${index}`} 
               className="flex items-center justify-center w-[100px] h-[50px] md:w-[150px] md:h-[75px] bg-white/5 rounded-md overflow-hidden"
+              title={logo.name}
             >
-              <img 
-                src={logo.logo}
-                alt={`${logo.name} logo`}
-                className="max-w-full max-h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
-                loading="lazy"
-                width="150"
-                height="75"
-              />
+              <div className="w-full h-full flex items-center justify-center text-white/70 hover:text-white/90 transition-colors">
+                {logo.svg}
+              </div>
             </div>
           ))}
         </div>
