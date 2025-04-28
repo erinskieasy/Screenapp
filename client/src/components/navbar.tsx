@@ -55,7 +55,7 @@ export function Navbar() {
           <span className="ml-2 font-semibold text-xl">{siteName}</span>
         </Link>
 
-        <nav className="hidden md:flex items-center justify-center flex-1 space-x-8">
+        <nav className="hidden md:flex items-center space-x-8">
           <ScrollTo targetId="how-it-works" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
             How It Works
           </ScrollTo>
