@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useSettings } from "@/hooks/use-settings";
 import { useEffect, useState } from "react";
-import { LogoTicker } from "@/components/ui/logo-ticker";
 import ReactMarkdown from "react-markdown";
 import heroBackground from "../assets/hero-background.jpeg";
 
@@ -148,13 +147,7 @@ export function HeroSection() {
             </form>
           </motion.div>
 
-          <motion.div 
-            variants={fadeIn("up", 0.6)} 
-            className="absolute bottom-0 left-0 right-0 py-8 px-4"
-          >
-            <div className="text-center text-sm text-neutral-400 mb-4">Trusted by top companies</div>
-            <LogoTicker />
-          </motion.div>
+
         </div>
       </motion.div>
     </section>
