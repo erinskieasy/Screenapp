@@ -5,6 +5,9 @@ import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
 import { AdminNavbar } from "@/components/admin-navbar";
 import { useToast } from "@/hooks/use-toast";
 import { useAllParishes } from "@/hooks/use-parishes";
+import { EmailTemplatesTab } from "@/components/email-templates-tab";
+import { EmailCampaignsTab } from "@/components/email-campaigns-tab";
+import { EmailLogsTab } from "@/components/email-logs-tab";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -492,12 +495,15 @@ export default function AdminDashboard() {
         <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
 
       <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="hero">Hero Section</TabsTrigger>
           <TabsTrigger value="branding">Branding</TabsTrigger>
           <TabsTrigger value="footer">Footer & Social</TabsTrigger>
           <TabsTrigger value="parishes">Parishes</TabsTrigger>
           <TabsTrigger value="waitlist">Waitlist Entries</TabsTrigger>
+          <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
+          <TabsTrigger value="email-campaigns">Email Campaigns</TabsTrigger>
+          <TabsTrigger value="email-logs">Email Logs</TabsTrigger>
         </TabsList>
 
         <TabsContent value="hero" className="space-y-4 mt-4">
@@ -1002,6 +1008,18 @@ export default function AdminDashboard() {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+        
+        <TabsContent value="email-templates" className="space-y-4 mt-4">
+          <EmailTemplatesTab />
+        </TabsContent>
+        
+        <TabsContent value="email-campaigns" className="space-y-4 mt-4">
+          <EmailCampaignsTab />
+        </TabsContent>
+        
+        <TabsContent value="email-logs" className="space-y-4 mt-4">
+          <EmailLogsTab />
         </TabsContent>
       </Tabs>
       </div>

@@ -27,7 +27,7 @@ export function useCreateEmailTemplate() {
   
   return useMutation({
     mutationFn: async (template: InsertEmailTemplate) => {
-      return await apiRequest<{ template: EmailTemplate }>('/api/email-templates', {
+      return await apiRequest('/api/email-templates', {
         method: 'POST',
         body: JSON.stringify(template),
       });
@@ -56,7 +56,7 @@ export function useUpdateEmailTemplate(id: number) {
   
   return useMutation({
     mutationFn: async (template: Partial<InsertEmailTemplate>) => {
-      return await apiRequest<{ template: EmailTemplate }>(`/api/email-templates/${id}`, {
+      return await apiRequest(`/api/email-templates/${id}`, {
         method: 'PATCH',
         body: JSON.stringify(template),
       });
