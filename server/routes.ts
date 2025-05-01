@@ -588,6 +588,473 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Email template endpoints
+  app.get("/api/email-templates", isAuthenticated, async (req, res) => {
+    try {
+      const templates = await storage.getAllEmailTemplates();
+      return res.status(200).json({
+        success: true,
+        templates
+      });
+    } catch (error) {
+      console.error("Error fetching email templates:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching email templates"
+      });
+    }
+  });
+  
+  app.get("/api/email-templates/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid template ID"
+        });
+      }
+      
+      const template = await storage.getEmailTemplate(id);
+      if (!template) {
+        return res.status(404).json({
+          success: false,
+          message: "Email template not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        template
+      });
+    } catch (error) {
+      console.error(`Error fetching email template ${req.params.id}:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching email template"
+      });
+    }
+  });
+  
+  app.post("/api/email-templates", isAuthenticated, async (req, res) => {
+    try {
+      // Validate the request body
+      const data = emailTemplateFormSchema.parse(req.body);
+      
+      // Create template
+      const template = await storage.createEmailTemplate(data);
+      
+      return res.status(201).json({
+        success: true,
+        template
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const validationError = fromZodError(error);
+        return res.status(400).json({ 
+          success: false, 
+          message: validationError.message
+        });
+      }
+      
+      console.error("Error creating email template:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while creating the email template"
+      });
+    }
+  });
+  
+  app.patch("/api/email-templates/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid template ID"
+        });
+      }
+      
+      // Check if template exists
+      const existingTemplate = await storage.getEmailTemplate(id);
+      if (!existingTemplate) {
+        return res.status(404).json({
+          success: false,
+          message: "Email template not found"
+        });
+      }
+      
+      // Validate updates
+      const updates = req.body;
+      
+      // Update template
+      const template = await storage.updateEmailTemplate(id, updates);
+      
+      return res.status(200).json({
+        success: true,
+        template
+      });
+    } catch (error) {
+      console.error(`Error updating email template ${req.params.id}:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while updating the email template"
+      });
+    }
+  });
+  
+  app.delete("/api/email-templates/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid template ID"
+        });
+      }
+      
+      // Delete template
+      const success = await storage.deleteEmailTemplate(id);
+      if (!success) {
+        return res.status(404).json({
+          success: false,
+          message: "Email template not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        message: "Email template deleted successfully"
+      });
+    } catch (error) {
+      console.error(`Error deleting email template ${req.params.id}:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while deleting the email template"
+      });
+    }
+  });
+  
+  // Email campaign endpoints
+  app.get("/api/email-campaigns", isAuthenticated, async (req, res) => {
+    try {
+      const campaigns = await storage.getAllEmailCampaigns();
+      return res.status(200).json({
+        success: true,
+        campaigns
+      });
+    } catch (error) {
+      console.error("Error fetching email campaigns:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching email campaigns"
+      });
+    }
+  });
+  
+  app.get("/api/email-campaigns/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid campaign ID"
+        });
+      }
+      
+      const campaign = await storage.getEmailCampaign(id);
+      if (!campaign) {
+        return res.status(404).json({
+          success: false,
+          message: "Email campaign not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        campaign
+      });
+    } catch (error) {
+      console.error(`Error fetching email campaign ${req.params.id}:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching email campaign"
+      });
+    }
+  });
+  
+  app.post("/api/email-campaigns", isAuthenticated, async (req, res) => {
+    try {
+      // Validate the request body
+      const data = emailCampaignFormSchema.parse(req.body);
+      
+      // Verify template exists
+      const template = await storage.getEmailTemplate(data.templateId);
+      if (!template) {
+        return res.status(400).json({
+          success: false,
+          message: "Email template not found"
+        });
+      }
+      
+      // Create campaign
+      const campaign = await storage.createEmailCampaign(data);
+      
+      return res.status(201).json({
+        success: true,
+        campaign
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const validationError = fromZodError(error);
+        return res.status(400).json({ 
+          success: false, 
+          message: validationError.message
+        });
+      }
+      
+      console.error("Error creating email campaign:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while creating the email campaign"
+      });
+    }
+  });
+  
+  app.patch("/api/email-campaigns/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid campaign ID"
+        });
+      }
+      
+      // Check if campaign exists
+      const existingCampaign = await storage.getEmailCampaign(id);
+      if (!existingCampaign) {
+        return res.status(404).json({
+          success: false,
+          message: "Email campaign not found"
+        });
+      }
+      
+      // If templateId is being updated, verify it exists
+      if (req.body.templateId) {
+        const template = await storage.getEmailTemplate(req.body.templateId);
+        if (!template) {
+          return res.status(400).json({
+            success: false,
+            message: "Email template not found"
+          });
+        }
+      }
+      
+      // Update campaign
+      const campaign = await storage.updateEmailCampaign(id, req.body);
+      
+      return res.status(200).json({
+        success: true,
+        campaign
+      });
+    } catch (error) {
+      console.error(`Error updating email campaign ${req.params.id}:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while updating the email campaign"
+      });
+    }
+  });
+  
+  app.delete("/api/email-campaigns/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid campaign ID"
+        });
+      }
+      
+      // Delete campaign
+      const success = await storage.deleteEmailCampaign(id);
+      if (!success) {
+        return res.status(404).json({
+          success: false,
+          message: "Email campaign not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        message: "Email campaign deleted successfully"
+      });
+    } catch (error) {
+      console.error(`Error deleting email campaign ${req.params.id}:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while deleting the email campaign"
+      });
+    }
+  });
+  
+  // Email sending endpoint
+  app.post("/api/email-campaigns/:id/send", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid campaign ID"
+        });
+      }
+      
+      // Get campaign
+      const campaign = await storage.getEmailCampaign(id);
+      if (!campaign) {
+        return res.status(404).json({
+          success: false,
+          message: "Email campaign not found"
+        });
+      }
+      
+      // Get template
+      const template = await storage.getEmailTemplate(campaign.templateId);
+      if (!template) {
+        return res.status(404).json({
+          success: false,
+          message: "Email template not found"
+        });
+      }
+      
+      // Check Resend API key is set
+      if (!resend) {
+        return res.status(500).json({
+          success: false,
+          message: "Email service is not configured. Please set the RESEND_API_KEY environment variable."
+        });
+      }
+      
+      // Get waitlist entries for sending
+      const waitlistEntries = await storage.getWaitlistEntries();
+      if (waitlistEntries.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "No recipients found in waitlist"
+        });
+      }
+      
+      // Tracking for successful and failed emails
+      const results = {
+        successful: 0,
+        failed: 0,
+        errors: [] as string[]
+      };
+      
+      // Send emails to each waitlist entry
+      for (const entry of waitlistEntries) {
+        try {
+          // Send email
+          const { data, error } = await resend.emails.send({
+            from: `${template.fromName} <${template.fromEmail}>`,
+            to: entry.email,
+            subject: template.subject,
+            html: template.body
+              .replace(/{{name}}/g, entry.fullName)
+              .replace(/{{email}}/g, entry.email),
+            text: template.plainText 
+              ? template.plainText
+                  .replace(/{{name}}/g, entry.fullName)
+                  .replace(/{{email}}/g, entry.email)
+              : undefined
+          });
+          
+          if (error) {
+            throw new Error(error.message);
+          }
+          
+          // Log the email
+          await storage.createEmailLog({
+            campaignId: campaign.id,
+            recipientEmail: entry.email,
+            recipientName: entry.fullName,
+            status: "sent",
+            metadata: { messageId: data?.id }
+          });
+          
+          results.successful++;
+        } catch (error: any) {
+          // Log the error
+          await storage.createEmailLog({
+            campaignId: campaign.id,
+            recipientEmail: entry.email,
+            recipientName: entry.fullName,
+            status: "failed",
+            error: error.message
+          });
+          
+          results.failed++;
+          results.errors.push(`Failed to send to ${entry.email}: ${error.message}`);
+        }
+      }
+      
+      // Update campaign status if all emails were sent successfully
+      if (results.failed === 0) {
+        await storage.updateEmailCampaign(campaign.id, { status: 'active' });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        message: `Sent ${results.successful} emails, ${results.failed} failed`,
+        results
+      });
+    } catch (error: any) {
+      console.error(`Error sending email campaign ${req.params.id}:`, error);
+      return res.status(500).json({
+        success: false,
+        message: `An error occurred while sending the email campaign: ${error.message}`
+      });
+    }
+  });
+  
+  // Email logs endpoints
+  app.get("/api/email-logs", isAuthenticated, async (req, res) => {
+    try {
+      const campaignId = req.query.campaignId ? parseInt(req.query.campaignId as string) : undefined;
+      const logs = await storage.getEmailLogs(campaignId);
+      
+      return res.status(200).json({
+        success: true,
+        logs
+      });
+    } catch (error) {
+      console.error("Error fetching email logs:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching email logs"
+      });
+    }
+  });
+  
+  app.get("/api/email-logs/recipient/:email", isAuthenticated, async (req, res) => {
+    try {
+      const email = req.params.email;
+      const logs = await storage.getEmailLogsByRecipient(email);
+      
+      return res.status(200).json({
+        success: true,
+        logs
+      });
+    } catch (error) {
+      console.error(`Error fetching email logs for recipient ${req.params.email}:`, error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching email logs"
+      });
+    }
+  });
+
   // Create HTTP server
   const httpServer = createServer(app);
 
