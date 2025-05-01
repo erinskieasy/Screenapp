@@ -261,6 +261,117 @@ export class DatabaseStorage implements IStorage {
       .returning();
     return result.length > 0;
   }
+
+  // Email template operations
+  async getEmailTemplate(id: number): Promise<EmailTemplate | undefined> {
+    const [template] = await db.select().from(emailTemplates).where(eq(emailTemplates.id, id));
+    return template || undefined;
+  }
+
+  async getAllEmailTemplates(): Promise<EmailTemplate[]> {
+    return await db.select().from(emailTemplates);
+  }
+
+  async createEmailTemplate(template: InsertEmailTemplate): Promise<EmailTemplate> {
+    const [newTemplate] = await db
+      .insert(emailTemplates)
+      .values(template)
+      .returning();
+    return newTemplate;
+  }
+
+  async updateEmailTemplate(id: number, data: Partial<InsertEmailTemplate>): Promise<EmailTemplate> {
+    const [updatedTemplate] = await db
+      .update(emailTemplates)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(emailTemplates.id, id))
+      .returning();
+    return updatedTemplate;
+  }
+
+  async deleteEmailTemplate(id: number): Promise<boolean> {
+    const result = await db
+      .delete(emailTemplates)
+      .where(eq(emailTemplates.id, id))
+      .returning();
+    return result.length > 0;
+  }
+
+  // Email campaign operations
+  async getEmailCampaign(id: number): Promise<EmailCampaign | undefined> {
+    const [campaign] = await db.select().from(emailCampaigns).where(eq(emailCampaigns.id, id));
+    return campaign || undefined;
+  }
+
+  async getAllEmailCampaigns(): Promise<EmailCampaign[]> {
+    return await db.select().from(emailCampaigns);
+  }
+
+  async createEmailCampaign(campaign: InsertEmailCampaign): Promise<EmailCampaign> {
+    const [newCampaign] = await db
+      .insert(emailCampaigns)
+      .values(campaign)
+      .returning();
+    return newCampaign;
+  }
+
+  async updateEmailCampaign(id: number, data: Partial<InsertEmailCampaign>): Promise<EmailCampaign> {
+    const [updatedCampaign] = await db
+      .update(emailCampaigns)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(emailCampaigns.id, id))
+      .returning();
+    return updatedCampaign;
+  }
+
+  async deleteEmailCampaign(id: number): Promise<boolean> {
+    const result = await db
+      .delete(emailCampaigns)
+      .where(eq(emailCampaigns.id, id))
+      .returning();
+    return result.length > 0;
+  }
+
+  // Email log operations
+  async getEmailLogs(campaignId?: number): Promise<EmailLog[]> {
+    if (campaignId) {
+      return await db.select().from(emailLogs).where(eq(emailLogs.campaignId, campaignId));
+    }
+    return await db.select().from(emailLogs);
+  }
+
+  async getEmailLogsByRecipient(email: string): Promise<EmailLog[]> {
+    return await db.select().from(emailLogs).where(eq(emailLogs.recipientEmail, email));
+  }
+
+  async createEmailLog(log: { 
+    campaignId: number; 
+    recipientEmail: string; 
+    recipientName?: string; 
+    status: string; 
+    error?: string; 
+    metadata?: any 
+  }): Promise<EmailLog> {
+    const [newLog] = await db
+      .insert(emailLogs)
+      .values({
+        campaignId: log.campaignId,
+        recipientEmail: log.recipientEmail,
+        recipientName: log.recipientName || null,
+        status: log.status,
+        error: log.error || null,
+        metadata: log.metadata || null,
+        sentAt: new Date()
+      })
+      .returning();
+    return newLog;
+  }
 }
 
 export const storage = new DatabaseStorage();

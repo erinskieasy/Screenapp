@@ -1,13 +1,26 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertWaitlistSchema, insertSiteSettingSchema, insertSocialLinkSchema, type InsertParish } from "@shared/schema";
+import { 
+  insertWaitlistSchema, 
+  insertSiteSettingSchema, 
+  insertSocialLinkSchema, 
+  emailTemplateFormSchema,
+  emailCampaignFormSchema,
+  type InsertParish,
+  type InsertEmailTemplate,
+  type InsertEmailCampaign
+} from "@shared/schema";
+import { Resend } from 'resend';
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { setupAuth } from "./auth";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+
+// Initialize Resend
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // Setup file uploads
 const uploadDir = path.join(process.cwd(), "client", "src", "assets");
