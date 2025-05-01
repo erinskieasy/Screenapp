@@ -5,9 +5,16 @@ import { type EmailCampaign, type InsertEmailCampaign } from "@shared/schema";
 
 // Hook for fetching all email campaigns
 export function useEmailCampaigns() {
-  return useQuery({
+  return useQuery<any, Error, { data: { campaigns: any[] } }, string[]>({
     queryKey: ['/api/email-campaigns'],
     staleTime: 60 * 1000, // 1 minute
+    select: (data: any) => {
+      return {
+        data: {
+          campaigns: data.campaigns || []
+        }
+      };
+    }
   });
 }
 
@@ -132,17 +139,31 @@ export function useSendEmailCampaign() {
 
 // Hook for fetching email logs
 export function useEmailLogs(campaignId?: number) {
-  return useQuery({
+  return useQuery<any, Error, { data: { logs: any[] } }, any>({
     queryKey: campaignId ? ['/api/email-logs', campaignId] : ['/api/email-logs'],
-    staleTime: 60 * 1000, // 1 minute
+    staleTime: 60 * 1000, // 1 minute,
+    select: (data: any) => {
+      return {
+        data: {
+          logs: data.logs || []
+        }
+      };
+    }
   });
 }
 
 // Hook for fetching email logs by recipient
 export function useEmailLogsByRecipient(email: string) {
-  return useQuery({
+  return useQuery<any, Error, { data: { logs: any[] } }, any>({
     queryKey: ['/api/email-logs/recipient', email],
     staleTime: 60 * 1000, // 1 minute
     enabled: !!email,
+    select: (data: any) => {
+      return {
+        data: {
+          logs: data.logs || []
+        }
+      };
+    }
   });
 }

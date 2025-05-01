@@ -5,7 +5,7 @@ import { type EmailTemplate, type InsertEmailTemplate } from "@shared/schema";
 
 // Hook for fetching all email templates
 export function useEmailTemplates() {
-  return useQuery({
+  return useQuery<any, Error, { data: { templates: any[] } }, string[]>({
     queryKey: ['/api/email-templates'],
     staleTime: 60 * 1000, // 1 minute
     select: (data: any) => {
