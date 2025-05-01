@@ -25,9 +25,9 @@ export function EmailLogsTab() {
   const { data: campaignsData, isLoading: isLoadingCampaigns } = useEmailCampaigns();
   
   const logs = searchTerm 
-    ? (searchLogsData?.logs || [])
-    : (logsData?.logs || []);
-  const campaigns = campaignsData?.campaigns || [];
+    ? (searchLogsData?.data?.logs || [])
+    : (logsData?.data?.logs || []);
+  const campaigns = campaignsData?.data?.campaigns || [];
   
   const handleSearch = () => {
     setSearchTerm(searchEmail);

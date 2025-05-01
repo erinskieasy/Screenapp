@@ -33,8 +33,8 @@ export function EmailCampaignsTab() {
   const deleteCampaignMutation = useDeleteEmailCampaign();
   const sendCampaignMutation = useSendEmailCampaign();
   
-  const campaigns = campaignsData?.campaigns || [];
-  const templates = templatesData?.templates || [];
+  const campaigns = campaignsData?.data?.campaigns || [];
+  const templates = templatesData?.data?.templates || [];
   
   const form = useForm({
     resolver: zodResolver(emailCampaignFormSchema),
@@ -130,8 +130,8 @@ export function EmailCampaignsTab() {
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {campaigns.map((campaign) => {
-            const template = templates.find(t => t.id === campaign.templateId);
+          {campaigns.map((campaign: EmailCampaign) => {
+            const template = templates.find((t: any) => t.id === campaign.templateId);
             
             return (
               <Card key={campaign.id} className="flex flex-col">
@@ -295,7 +295,7 @@ export function EmailCampaignsTab() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {templates.map((template) => (
+                          {templates.map((template: any) => (
                             <SelectItem key={template.id} value={template.id.toString()}>
                               {template.name}
                             </SelectItem>

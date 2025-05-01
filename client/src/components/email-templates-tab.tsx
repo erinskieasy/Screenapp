@@ -28,7 +28,7 @@ export function EmailTemplatesTab() {
   const updateTemplateMutation = useUpdateEmailTemplate(selectedTemplate?.id || 0);
   const deleteTemplateMutation = useDeleteEmailTemplate();
   
-  const templates = templatesData?.templates || [];
+  const templates = templatesData?.data?.templates || [];
   
   const form = useForm({
     resolver: zodResolver(emailTemplateFormSchema),
@@ -104,7 +104,7 @@ export function EmailTemplatesTab() {
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {templates.map((template) => (
+          {templates.map((template: EmailTemplate) => (
             <Card key={template.id} className="flex flex-col">
               <CardHeader>
                 <div className="flex justify-between items-start">
@@ -297,7 +297,7 @@ export function EmailTemplatesTab() {
                       />
                     </FormControl>
                     <FormDescription>
-                      HTML content of the email. Use {{name}} or {{email}} as placeholders.
+                      HTML content of the email. Use placeholders for personalization.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
