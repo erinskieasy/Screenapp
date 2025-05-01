@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, jsonb, timestamp, pgEnum } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -38,6 +38,62 @@ export const parishes = pgTable("parishes", {
   name: text("name").notNull().unique(),
   active: boolean("active").notNull().default(true),
   createdAt: text("created_at").notNull()
+});
+
+// Email template trigger types
+export const emailTriggerTypeEnum = pgEnum('email_trigger_type', [
+  'immediate', // Send immediately after creation
+  'scheduled', // Send at a specific date/time
+  'delay',     // Send X days after subscription
+  'sequence',  // Part of a sequence of emails
+]);
+
+// Email template status
+export const emailStatusEnum = pgEnum('email_status', [
+  'draft',     // Still being edited
+  'active',    // Ready to be sent
+  'paused',    // Temporarily paused
+  'archived'   // No longer in use
+]);
+
+// Email templates table
+export const emailTemplates = pgTable("email_templates", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),             // Internal name for the template
+  subject: text("subject").notNull(),       // Email subject line
+  body: text("body").notNull(),             // HTML email body
+  plainText: text("plain_text"),            // Plain text version (optional)
+  fromName: text("from_name").notNull(),    // Sender name
+  fromEmail: text("from_email").notNull(),  // Sender email
+  status: emailStatusEnum("status").notNull().default('draft'),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow()
+});
+
+// Email campaigns table
+export const emailCampaigns = pgTable("email_campaigns", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),                  // Campaign name
+  description: text("description"),              // Campaign description
+  templateId: integer("template_id").notNull(),  // Reference to the email template
+  triggerType: emailTriggerTypeEnum("trigger_type").notNull(),
+  triggerValue: text("trigger_value"),           // Could be a date, number of days, or null for immediate
+  status: emailStatusEnum("status").notNull().default('draft'),
+  audience: jsonb("audience"),                   // JSON for audience filtering criteria
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow()
+});
+
+// Email sending history/logs
+export const emailLogs = pgTable("email_logs", {
+  id: serial("id").primaryKey(),
+  campaignId: integer("campaign_id").notNull(),  // Associated campaign
+  recipientEmail: text("recipient_email").notNull(),
+  recipientName: text("recipient_name"),
+  sentAt: timestamp("sent_at").notNull().defaultNow(),
+  status: text("status").notNull(),              // "sent", "delivered", "opened", "clicked", "bounced", "failed"
+  error: text("error"),                          // Error message if failed
+  metadata: jsonb("metadata")                    // Additional metadata (opens, clicks, etc.)
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -97,3 +153,70 @@ export type SocialLink = typeof socialLinks.$inferSelect;
 
 export type InsertParish = z.infer<typeof insertParishSchema>;
 export type Parish = typeof parishes.$inferSelect;
+
+// Zod schema for email templates
+export const insertEmailTemplateSchema = createInsertSchema(emailTemplates).pick({
+  name: true,
+  subject: true,
+  body: true,
+  plainText: true,
+  fromName: true,
+  fromEmail: true,
+  status: true,
+});
+
+// Add validation rules for email templates
+export const emailTemplateFormSchema = insertEmailTemplateSchema.extend({
+  name: z.string().min(3, {
+    message: "Template name must be at least 3 characters.",
+  }),
+  subject: z.string().min(2, {
+    message: "Subject line is required.",
+  }),
+  body: z.string().min(10, {
+    message: "Email body must be at least 10 characters.",
+  }),
+  plainText: z.string().optional(),
+  fromName: z.string().min(2, {
+    message: "Sender name is required.",
+  }),
+  fromEmail: z.string().email({
+    message: "Please enter a valid email address for the sender.",
+  }),
+  status: z.enum(['draft', 'active', 'paused', 'archived']),
+});
+
+// Zod schema for email campaigns
+export const insertEmailCampaignSchema = createInsertSchema(emailCampaigns).pick({
+  name: true,
+  description: true,
+  templateId: true,
+  triggerType: true,
+  triggerValue: true,
+  status: true,
+  audience: true,
+});
+
+// Add validation rules for email campaigns
+export const emailCampaignFormSchema = insertEmailCampaignSchema.extend({
+  name: z.string().min(3, {
+    message: "Campaign name must be at least 3 characters.",
+  }),
+  description: z.string().optional(),
+  templateId: z.number().positive({
+    message: "Please select an email template.",
+  }),
+  triggerType: z.enum(['immediate', 'scheduled', 'delay', 'sequence']),
+  triggerValue: z.string().optional(),
+  status: z.enum(['draft', 'active', 'paused', 'archived']),
+  audience: z.any().optional(),
+});
+
+// Define types
+export type InsertEmailTemplate = z.infer<typeof insertEmailTemplateSchema>;
+export type EmailTemplate = typeof emailTemplates.$inferSelect;
+
+export type InsertEmailCampaign = z.infer<typeof insertEmailCampaignSchema>;
+export type EmailCampaign = typeof emailCampaigns.$inferSelect;
+
+export type EmailLog = typeof emailLogs.$inferSelect;

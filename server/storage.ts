@@ -4,6 +4,9 @@ import {
   siteSettings, 
   socialLinks,
   parishes,
+  emailTemplates,
+  emailCampaigns,
+  emailLogs,
   type User, 
   type InsertUser, 
   type WaitlistEntry, 
@@ -13,7 +16,12 @@ import {
   type SocialLink,
   type InsertSocialLink,
   type Parish,
-  type InsertParish
+  type InsertParish,
+  type EmailTemplate,
+  type InsertEmailTemplate,
+  type EmailCampaign,
+  type InsertEmailCampaign,
+  type EmailLog
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -53,6 +61,25 @@ export interface IStorage {
   createParish(parish: InsertParish & { createdAt: string }): Promise<Parish>;
   updateParish(id: number, data: Partial<InsertParish>): Promise<Parish>;
   deleteParish(id: number): Promise<boolean>;
+  
+  // Email template operations
+  getEmailTemplate(id: number): Promise<EmailTemplate | undefined>;
+  getAllEmailTemplates(): Promise<EmailTemplate[]>;
+  createEmailTemplate(template: InsertEmailTemplate): Promise<EmailTemplate>;
+  updateEmailTemplate(id: number, data: Partial<InsertEmailTemplate>): Promise<EmailTemplate>;
+  deleteEmailTemplate(id: number): Promise<boolean>;
+  
+  // Email campaign operations
+  getEmailCampaign(id: number): Promise<EmailCampaign | undefined>;
+  getAllEmailCampaigns(): Promise<EmailCampaign[]>;
+  createEmailCampaign(campaign: InsertEmailCampaign): Promise<EmailCampaign>;
+  updateEmailCampaign(id: number, data: Partial<InsertEmailCampaign>): Promise<EmailCampaign>;
+  deleteEmailCampaign(id: number): Promise<boolean>;
+  
+  // Email log operations
+  getEmailLogs(campaignId?: number): Promise<EmailLog[]>;
+  getEmailLogsByRecipient(email: string): Promise<EmailLog[]>;
+  createEmailLog(log: { campaignId: number; recipientEmail: string; recipientName?: string; status: string; error?: string; metadata?: any }): Promise<EmailLog>;
   
   // Session store
   sessionStore: session.Store;
