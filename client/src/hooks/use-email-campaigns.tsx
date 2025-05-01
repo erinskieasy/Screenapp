@@ -27,10 +27,8 @@ export function useCreateEmailCampaign() {
   
   return useMutation({
     mutationFn: async (campaign: InsertEmailCampaign) => {
-      return await apiRequest<{ campaign: EmailCampaign }>('/api/email-campaigns', {
-        method: 'POST',
-        body: JSON.stringify(campaign),
-      });
+      const res = await apiRequest('POST', '/api/email-campaigns', campaign);
+      return await res.json();
     },
     onSuccess: () => {
       toast({
@@ -56,10 +54,8 @@ export function useUpdateEmailCampaign(id: number) {
   
   return useMutation({
     mutationFn: async (campaign: Partial<InsertEmailCampaign>) => {
-      return await apiRequest<{ campaign: EmailCampaign }>(`/api/email-campaigns/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(campaign),
-      });
+      const res = await apiRequest('PATCH', `/api/email-campaigns/${id}`, campaign);
+      return await res.json();
     },
     onSuccess: () => {
       toast({
@@ -86,9 +82,8 @@ export function useDeleteEmailCampaign() {
   
   return useMutation({
     mutationFn: async (id: number) => {
-      return await apiRequest<{ success: boolean }>(`/api/email-campaigns/${id}`, {
-        method: 'DELETE',
-      });
+      const res = await apiRequest('DELETE', `/api/email-campaigns/${id}`);
+      return await res.json();
     },
     onSuccess: () => {
       toast({
@@ -114,9 +109,8 @@ export function useSendEmailCampaign() {
   
   return useMutation({
     mutationFn: async (id: number) => {
-      return await apiRequest<{ success: boolean, message: string, results: any }>(`/api/email-campaigns/${id}/send`, {
-        method: 'POST',
-      });
+      const res = await apiRequest('POST', `/api/email-campaigns/${id}/send`);
+      return await res.json();
     },
     onSuccess: (data) => {
       toast({

@@ -27,10 +27,8 @@ export function useCreateEmailTemplate() {
   
   return useMutation({
     mutationFn: async (template: InsertEmailTemplate) => {
-      return await apiRequest('/api/email-templates', {
-        method: 'POST',
-        body: JSON.stringify(template),
-      });
+      const res = await apiRequest('POST', '/api/email-templates', template);
+      return await res.json();
     },
     onSuccess: () => {
       toast({
@@ -56,10 +54,8 @@ export function useUpdateEmailTemplate(id: number) {
   
   return useMutation({
     mutationFn: async (template: Partial<InsertEmailTemplate>) => {
-      return await apiRequest(`/api/email-templates/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(template),
-      });
+      const res = await apiRequest('PATCH', `/api/email-templates/${id}`, template);
+      return await res.json();
     },
     onSuccess: () => {
       toast({
@@ -86,9 +82,8 @@ export function useDeleteEmailTemplate() {
   
   return useMutation({
     mutationFn: async (id: number) => {
-      return await apiRequest<{ success: boolean }>(`/api/email-templates/${id}`, {
-        method: 'DELETE',
-      });
+      const res = await apiRequest('DELETE', `/api/email-templates/${id}`);
+      return await res.json();
     },
     onSuccess: () => {
       toast({
