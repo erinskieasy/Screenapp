@@ -119,7 +119,7 @@ export function EmailLogsTab() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">All Campaigns</SelectItem>
-              {campaigns.map((campaign) => (
+              {campaigns.map((campaign: any) => (
                 <SelectItem key={campaign.id} value={campaign.id.toString()}>
                   {campaign.name}
                 </SelectItem>
@@ -146,8 +146,8 @@ export function EmailLogsTab() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {logs.map((log) => {
-                const campaign = campaigns.find(c => c.id === log.campaignId);
+              {logs.map((log: any) => {
+                const campaign = campaigns.find((c: any) => c.id === log.campaignId);
                 
                 return (
                   <TableRow key={log.id}>

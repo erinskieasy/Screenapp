@@ -8,6 +8,13 @@ export function useEmailTemplates() {
   return useQuery({
     queryKey: ['/api/email-templates'],
     staleTime: 60 * 1000, // 1 minute
+    select: (data: any) => {
+      return {
+        data: {
+          templates: data.templates || []
+        }
+      };
+    }
   });
 }
 
