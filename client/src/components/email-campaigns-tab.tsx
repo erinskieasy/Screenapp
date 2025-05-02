@@ -86,11 +86,18 @@ export function EmailCampaignsTab() {
   };
   
   const onSubmit = (data: Record<string, any>) => {
+    // Log the templateId value
+    console.log('Raw templateId:', data.templateId);
+    console.log('templateId type:', typeof data.templateId);
+    
     // Ensure templateId is a number
     const formData = {
       ...data,
       templateId: Number(data.templateId)
     };
+    
+    console.log('Converted templateId:', formData.templateId);
+    console.log('Converted templateId type:', typeof formData.templateId);
     
     if (selectedCampaign) {
       updateCampaignMutation.mutate(formData as any);
