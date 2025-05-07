@@ -11,8 +11,8 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <WaitlistForm />
-      <ValueProposition />
-      <BenefitsSection />
+      {/* <ValueProposition /> */}
+      {/* <BenefitsSection /> */}
       <Footer />
     </div>
   );

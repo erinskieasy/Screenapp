@@ -1,0 +1,48 @@
+ <section className="relative bg-neutral-dark">
+      <div className="absolute inset-0 bg-gradient-to-r from-neutral-dark/80 to-primary/50 z-10"></div>
+      <div className="w-full h-[60vh] md:h-[70vh] overflow-hidden">
+        <img 
+          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+          alt="AI Conference keynote presentation" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="absolute inset-0 flex items-center z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="lg:w-3/5">
+            <div className="inline-block mb-4 bg-accent/90 px-4 py-1 rounded-full">
+              <p className="text-white font-medium uppercase tracking-wide text-sm">AI PIONEER</p>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6">
+              EVENT 2025
+            </h1>
+            <div className="bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-xl space-y-3 mb-8">
+              <div className="flex items-start">
+                <div className="text-accent text-xl mr-3">
+                  <FaCalendarAlt />
+                </div>
+                <div>
+                  <p className="text-neutral font-medium">May 10</p>
+                  <p className="text-gray-600">12 PM - 4 PM (JAMAICA TIME)</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="text-accent text-xl mr-3">
+                  <FaMapMarkerAlt />
+                </div>
+                <div>
+                  <p className="text-neutral font-medium">AI Academy | AC Hotel Kingston</p>
+                  <p className="text-gray-600">38-42 Lady Musgrave Rd, Kingston 5, Jamaica</p>
+                </div>
+              </div>
+            </div>
+            <a href="#register" className="inline-block bg-accent hover:bg-accent-dark text-white font-medium px-6 py-3 rounded-md shadow-lg hover:shadow-xl transition duration-300 ease-in-out mr-4">
+              Register Now
+            </a>
+            <a href="#agenda" className="inline-block bg-white hover:bg-gray-100 text-primary font-medium px-6 py-3 rounded-md shadow-lg hover:shadow-xl transition duration-300 ease-in-out">
+              View Agenda
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
