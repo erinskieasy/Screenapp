@@ -203,7 +203,7 @@ export function HeroSection() {
     <section className="h-[99vh] relative bg-slate-900 flex items-center rounded-xl overflow-hidden mx-1 my-1">
       {/* Loading State */}
       <div 
-        className={`absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-900 z-0 transition-opacity duration-500 ${isMediaLoaded ? 'opacity-0' : 'opacity-100'}`}
+        className={`absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-900 z-50 transition-opacity duration-700 ${isMediaLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -237,8 +237,8 @@ export function HeroSection() {
       <motion.div
         variants={staggerContainer}
         initial="hidden"
-        animate="show"
-        className="container mx-auto px-4 relative z-10"
+        animate={isMediaLoaded ? "show" : "hidden"}
+        className={`container mx-auto px-4 relative z-10 transition-opacity duration-700 ${isMediaLoaded ? 'opacity-100' : 'opacity-0'}`}
       >
         <div className="max-w-3xl mx-auto text-center">
           <motion.h1
