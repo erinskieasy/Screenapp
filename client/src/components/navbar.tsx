@@ -43,7 +43,7 @@ export function Navbar() {
         <motion.div
           className={`
             rounded-2xl backdrop-blur-lg w-[95%] max-w-4xl
-            ${isScrolled ? 'bg-white/90 dark:bg-gray-950/90 shadow-lg' : 'bg-white/50 dark:bg-gray-950/50'}
+            ${isScrolled ? 'bg-white/50 dark:bg-gray-950/50 shadow-lg' : 'bg-white/90 dark:bg-gray-950/90'}
             transition-all duration-300
           `}
         >
