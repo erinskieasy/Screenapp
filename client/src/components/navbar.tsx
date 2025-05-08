@@ -38,6 +38,12 @@ export function Navbar() {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+          bounce: 0.5
+        }}
         className="fixed top-4 left-0 right-0 w-full z-50 flex justify-center"
       >
         <motion.div
