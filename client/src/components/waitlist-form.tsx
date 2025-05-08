@@ -130,7 +130,7 @@ export function WaitlistForm() {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Event Details - Left Column */}
           <motion.div
-            variants={fadeIn("right", 0.3)}
+            variants={fadeIn("up", 0.3)}
             className="flex flex-col"
           >
             <div className="relative rounded-lg overflow-hidden shadow-lg mb-6 h-64 md:h-72">
@@ -204,7 +204,7 @@ export function WaitlistForm() {
           {/* Registration Form - Right Column */}
           <motion.div 
             id="registration-form"
-            variants={fadeIn("left", 0.4)}
+            variants={fadeIn("up", 0.5)}
             className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg border border-neutral-100 dark:border-gray-700"
           >
             <div className="mb-6">
