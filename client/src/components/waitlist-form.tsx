@@ -273,7 +273,15 @@ export function WaitlistForm() {
                 </div>
                 <h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Registration Confirmed!</h3>
                 <p className="text-neutral-600 dark:text-neutral-400 mb-6">
-                  Thank you for registering for our event. We'll be in touch soon with event details.
+                  This isn't your average meet-and-greet. This is your launchpad.
+                  Come Prepared:
+                  Laptop or tablet (charged and ready)
+                  Mobile phone with internet access
+                  Government-issued photo ID
+
+
+                  This is a high-opportunity zone. Expect insight. Expect access. Expect to be seen.
+
                 </p>
                 <Button 
                   onClick={resetForm} 
@@ -334,11 +342,16 @@ export function WaitlistForm() {
                 
                 <div className="pt-4 space-y-4">
                   <h4 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">What to Expect:</h4>
+                  <p className="text-neutral-600 dark:text-neutral-400">
+                    Are you a Pioneer Software Dev, ready to change the world with tech? Then this is the event you’ve been waiting for.</p>
+                    <p className="text-neutral-600 dark:text-neutral-400">
+                    Step into the future at The Screen Launch, the premiere gathering for AI pioneers—a vibrant fusion of networking, innovation, and real-world breakthroughs. Rub shoulders with talent scouts, recruiters, and decision-makers from Fortune 500 tech giants and bold international startups hungry for fresh minds like yours.
+                  </p>
+                  <h4 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">What to Bring:</h4>
                   <ul className="list-disc list-inside text-neutral-700 dark:text-neutral-300 space-y-2 pl-1">
-                    <li>Industry expert panels and keynote speakers</li>
-                    <li>Live AI demonstrations and use cases</li>
-                    <li>Networking opportunities with tech professionals</li>
-                    <li>Refreshments and complimentary resources</li>
+                    <li>Laptop or tablet (charged and ready)</li>
+                    <li>Mobile phone with internet access</li>
+                    <li>Government-issued photo ID</li>
                   </ul>
                 </div>
                 

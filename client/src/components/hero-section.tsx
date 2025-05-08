@@ -296,7 +296,7 @@ export function HeroSection() {
                   className="px-3 py-[5px] inline-block rounded-md text-sm font-medium tracking-[-0.035px] transition-[background-color,box-shadow,color,outline] ease-out duration-150 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-3 bg-primary text-white shadow-[0px_1px_1px_0px_rgba(0,0,0,0.20),_0px_8px_4px_-8px_rgba(48,90,196,0.80),_0px_0px_0px_1px_#305AC4] hover:bg-primary-dark active:bg-primary-dark/90 active:shadow-[0px_1px_1px_0px_rgba(0,0,0,0),_0px_8px_4px_-8px_rgba(48,90,196,0),_0px_0px_0px_1px_#305AC4] active:text-white/[0.90]"
                 >
                   <span className="grid *:col-start-1 *:row-start-1">
-                    <span>Join Waitlist</span>
+                    <span>Register Now</span>
                   </span>
                 </button>
               </div>
