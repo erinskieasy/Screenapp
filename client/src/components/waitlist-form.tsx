@@ -356,9 +356,12 @@ export function WaitlistForm() {
                 </div>
                 
                 <div className="pt-2 flex space-x-4">
-                  <a href="#agenda" className="inline-block bg-white hover:bg-gray-100 text-accent font-medium px-4 py-2 rounded-md shadow border border-accent/30 transition duration-300 ease-in-out">
-                    View Agenda
-                  </a>
+                  <button 
+                    onClick={() => document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="inline-block bg-accent hover:bg-accent-dark text-white font-medium px-6 py-3 rounded-md shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1"
+                  >
+                    Register Now
+                  </button>
                 </div>
               </div>
             </div>
