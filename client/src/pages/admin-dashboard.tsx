@@ -1003,6 +1003,7 @@ export default function AdminDashboard() {
                           <TableHead>Parish</TableHead>
                           <TableHead>Role</TableHead>
                           <TableHead>Date</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -1015,6 +1016,33 @@ export default function AdminDashboard() {
                             <TableCell>{entry.role}</TableCell>
                             <TableCell>
                               {new Date(entry.createdAt).toLocaleDateString()}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="icon">
+                                    <Trash2 className="h-4 w-4 text-red-500" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Delete waitlist entry?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This will permanently remove the entry for {entry.fullName} from the waitlist.
+                                      This action cannot be undone.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction
+                                      onClick={() => handleDeleteWaitlistEntry(entry.id)}
+                                      className="bg-red-500 text-white hover:bg-red-600"
+                                    >
+                                      Delete
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
                             </TableCell>
                           </TableRow>
                         ))}
