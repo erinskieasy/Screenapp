@@ -74,6 +74,7 @@ export function Footer() {
               </Link>
             </div>
             
+            {/* Social Links (Commented Out)
             <div className="flex space-x-4">
               {socialLinks.length > 0 ? (
                 socialLinks.map((link: any) => (
@@ -114,6 +115,7 @@ export function Footer() {
                 </>
               )}
             </div>
+            */}
           </div>
           
           <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-gray-800 text-center">
