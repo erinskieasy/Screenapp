@@ -308,6 +308,7 @@ export function HeroSection() {
       </motion.div>
       
       {/* Partners Logo Ticker */}
+      {/*
       <motion.div 
         variants={fadeIn("up", 0.6)}
         className="absolute bottom-10 left-0 right-0 z-10"
@@ -319,6 +320,7 @@ export function HeroSection() {
           <LogoTicker />
         </div>
       </motion.div>
+      */}
     </section>
   );
 }
