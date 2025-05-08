@@ -170,8 +170,8 @@ export function HeroSection() {
   const { isMediaLoaded, setIsMediaLoaded, setIsLoading } = useLoading();
 
   // Get hero settings with defaults
-  const heroTitle = getSetting("heroTitle", "Find the Job That Finds You.");
-  const heroSubtitle = getSetting("heroSubtitle", "Let AI match you with your next software engineering opportunity.");
+  const heroTitle = getSetting("heroTitle", "");
+  const heroSubtitle = getSetting("heroSubtitle", "");
 
   // Get hero background media if it exists
   const heroBackgroundMedia = getSetting("heroBackgroundImage");
