@@ -69,13 +69,11 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center md:hidden">
-          <ThemeToggle />
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
-            className="ml-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -119,6 +117,13 @@ export function Navbar() {
           >
             Join Waitlist
           </ScrollTo>
+          
+          <div className="py-2 border-t border-neutral-100 dark:border-gray-800 mt-1">
+            <div className="flex items-center justify-between">
+              <span className="text-neutral-600 dark:text-neutral-300">Theme</span>
+              <ThemeToggle variant="compact" />
+            </div>
+          </div>
         </div>
       </div>
     </header>
