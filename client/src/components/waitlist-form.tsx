@@ -320,6 +320,8 @@ export function WaitlistForm() {
                             <SelectItem value="fullstack">Full Stack Developer</SelectItem>
                             <SelectItem value="mobile">Mobile Developer</SelectItem>
                             <SelectItem value="devops">DevOps Engineer</SelectItem>
+                            <SelectItem value="project_manager">Project Management</SelectItem>
+                            <SelectItem value="student">Student</SelectItem>
                             <SelectItem value="other">Other</SelectItem>
                           </SelectContent>
                         </Select>
