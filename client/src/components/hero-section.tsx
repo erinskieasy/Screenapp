@@ -4,6 +4,7 @@ import { appEventBus } from "@/lib/eventBus";
 import { Button } from "@/components/ui/button";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useSettings } from "@/hooks/use-settings";
+import { useLoading } from "@/hooks/use-loading-context";
 import { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import heroBackground from "../assets/hero-background.jpeg";
@@ -166,7 +167,7 @@ function LogoTicker() {
 
 export function HeroSection() {
   const { getSetting } = useSettings();
-  const [isMediaLoaded, setIsMediaLoaded] = useState(false);
+  const { isMediaLoaded, setIsMediaLoaded, setIsLoading } = useLoading();
 
   // Get hero settings with defaults
   const heroTitle = getSetting("heroTitle", "Find the Job That Finds You.");
@@ -199,6 +200,20 @@ export function HeroSection() {
 
   const backgroundMediaUrl = determineBackgroundMedia();
 
+  // Fallback in case media doesn't load
+  useEffect(() => {
+    // Set a timeout to ensure we don't wait forever for media to load
+    const fallbackTimer = setTimeout(() => {
+      if (!isMediaLoaded) {
+        console.log('[Hero Section] Media load timeout - forcing load completion');
+        setIsMediaLoaded(true);
+        setIsLoading(false);
+      }
+    }, 5000); // 5 seconds fallback
+
+    return () => clearTimeout(fallbackTimer);
+  }, [isMediaLoaded, setIsMediaLoaded, setIsLoading]);
+
   return (
     <section className="h-[99vh] relative bg-slate-900 flex items-center rounded-2xl overflow-hidden mx-1 my-1">
       {/* Loading State */}
@@ -220,7 +235,10 @@ export function HeroSection() {
             loop 
             playsInline
             src={backgroundMediaUrl}
-            onLoadedData={() => setIsMediaLoaded(true)}
+            onLoadedData={() => {
+              setIsMediaLoaded(true);
+              setTimeout(() => setIsLoading(false), 500); // Delay to ensure the loading overlay fades out smoothly
+            }}
           />
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         </div>
@@ -228,8 +246,16 @@ export function HeroSection() {
         <div 
           className={`absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500 ${isMediaLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={{ backgroundImage: `url(${backgroundMediaUrl})` }}
-          onLoad={() => setIsMediaLoaded(true)}
         >
+          <img 
+            src={backgroundMediaUrl}
+            alt="Background"
+            className="hidden"
+            onLoad={() => {
+              setIsMediaLoaded(true);
+              setTimeout(() => setIsLoading(false), 500); // Delay to ensure the loading overlay fades out smoothly
+            }}
+          />
           <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         </div>
       )}
