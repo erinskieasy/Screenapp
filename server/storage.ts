@@ -42,6 +42,7 @@ export interface IStorage {
   // Waitlist operations
   addWaitlistEntry(entry: InsertWaitlistEntry & { createdAt: string }): Promise<WaitlistEntry>;
   getWaitlistEntries(): Promise<WaitlistEntry[]>;
+  deleteWaitlistEntry(id: number): Promise<boolean>;
   
   // Site settings operations
   getSiteSetting(key: string): Promise<SiteSetting | undefined>;
@@ -132,6 +133,14 @@ export class DatabaseStorage implements IStorage {
 
   async getWaitlistEntries(): Promise<WaitlistEntry[]> {
     return await db.select().from(waitlistEntries);
+  }
+  
+  async deleteWaitlistEntry(id: number): Promise<boolean> {
+    const result = await db
+      .delete(waitlistEntries)
+      .where(eq(waitlistEntries.id, id))
+      .returning();
+    return result.length > 0;
   }
   
   // Site settings operations

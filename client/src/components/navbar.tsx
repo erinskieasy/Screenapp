@@ -56,12 +56,12 @@ export function Navbar() {
         </Link>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <ScrollTo targetId="how-it-works" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
+          {/* <ScrollTo targetId="how-it-works" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
             How It Works
           </ScrollTo>
           <ScrollTo targetId="benefits" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
             Benefits
-          </ScrollTo>
+          </ScrollTo> */}
           <ScrollTo targetId="join" className="text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary transition-colors">
             Join Waitlist
           </ScrollTo>
@@ -96,7 +96,7 @@ export function Navbar() {
       {/* Mobile menu */}
       <div className={`md:hidden bg-white dark:bg-gray-950 border-t border-neutral-100 dark:border-gray-800 shadow-sm ${mobileMenuOpen ? 'block' : 'hidden'}`}>
         <div className="container mx-auto px-4 py-2 space-y-3">
-          <ScrollTo
+          {/* <ScrollTo
             targetId="how-it-works"
             className="block py-2 text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary"
             onClick={() => setMobileMenuOpen(false)}
@@ -109,7 +109,7 @@ export function Navbar() {
             onClick={() => setMobileMenuOpen(false)}
           >
             Benefits
-          </ScrollTo>
+          </ScrollTo> */}
           <ScrollTo
             targetId="join"
             className="block py-2 text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary"

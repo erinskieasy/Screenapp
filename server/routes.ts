@@ -128,6 +128,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+  
+  // Admin endpoint to delete a waitlist entry
+  app.delete("/api/waitlist/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid ID format"
+        });
+      }
+      
+      const success = await storage.deleteWaitlistEntry(id);
+      
+      if (success) {
+        return res.status(200).json({
+          success: true,
+          message: "Waitlist entry deleted successfully"
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Waitlist entry not found"
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting waitlist entry:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while deleting the waitlist entry"
+      });
+    }
+  });
 
   // Download waitlist entries as CSV
   app.get("/api/waitlist/download", isAuthenticated, async (req, res) => {
