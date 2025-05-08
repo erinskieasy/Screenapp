@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Component Preview</title>
+    <style>
+        /* General body styling for centering the component */
+        body {
+            font-family: 'Inter', Arial, sans-serif; /* Using Inter font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5; /* Light gray background */
+            margin: 0;
+            padding: 20px; /* Add some padding for smaller screens */
+            box-sizing: border-box;
+        }
+
+        /* Main container for the event component */
+        .event-container {
+            display: flex;
+            background-color: #ffffff; /* White background for the card */
+            border: 1px solid #e0e0e0; /* Lighter border */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            max-width: 600px;
+            width: 100%; /* Responsive width */
+            overflow: hidden; /* Ensures border-radius clips content */
+            font-smooth: antialiased;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Styling for the date section on the left */
+        .event-date {
+            background-color: #4A8CF7; /* Blue color similar to the image */
+            color: white;
+            padding: 25px 20px; /* Adjusted padding */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-width: 100px; /* Slightly wider */
+            border-top-left-radius: 11px; /* Match container rounding */
+            border-bottom-left-radius: 11px; /* Match container rounding */
+        }
+
+        .event-date .month {
+            font-size: 0.9em;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .event-date .day {
+            font-size: 2.8em; /* Larger day number */
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .event-date .weekday {
+            font-size: 0.9em;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        /* Styling for the event details section on the right */
+        .event-details {
+            padding: 25px; /* Consistent padding */
+            flex-grow: 1; /* Allows this section to take remaining space */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-details h2 {
+            margin-top: 0;
+            margin-bottom: 8px; /* Increased spacing */
+            font-size: 1.75em; /* Slightly adjusted title size */
+            color: #2c3e50; /* Darker, more modern text color */
+            font-weight: 600;
+        }
+
+        .event-details .view-on-calendar {
+            font-size: 0.9em;
+            color: #3498db; /* Brighter blue for link */
+            text-decoration: none;
+            margin-bottom: 20px; /* More space below */
+            display: block; /* To take its own line */
+        }
+
+        .event-details .view-on-calendar:hover {
+            text-decoration: underline;
+        }
+
+        /* Styling for rows of information (When, Where) */
+        .info-row {
+            margin-bottom: 12px; /* Increased spacing */
+            font-size: 0.95em;
+            color: #555e68; /* Softer text color */
+            display: flex; /* For better alignment */
+            align-items: flex-start;
+        }
+
+        .info-row .label {
+            font-weight: 600; /* Bolder label */
+            margin-right: 8px; /* More space after label */
+            color: #34495e; /* Darker label color */
+            min-width: 60px; /* Ensure alignment */
+        }
+
+        .info-row .value {
+            flex: 1;
+        }
+
+        /* Styling for the "Add to Calendar" button */
+        .add-to-calendar-btn {
+            display: inline-block;
+            background-color: #27ae60; /* Greener button */
+            color: white;
+            padding: 12px 24px; /* Larger padding */
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px; /* More rounded button */
+            font-size: 1em;
+            font-weight: 500;
+            margin-top: auto; /* Pushes button to the bottom if space allows */
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+            align-self: flex-start; /* Align button to the start of the flex item */
+        }
+
+        .add-to-calendar-btn:hover {
+            background-color: #229954; /* Darker green on hover */
+            transform: translateY(-1px); /* Slight lift effect */
+        }
+         .add-to-calendar-btn:active {
+            background-color: #1e8449;
+            transform: translateY(0px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .event-container {
+                flex-direction: column; /* Stack date and details vertically */
+            }
+            .event-date {
+                min-width: auto; /* Allow date section to take full width */
+                width: 100%;
+                padding: 15px;
+                border-top-right-radius: 11px; /* Adjust rounding for stacked view */
+                border-bottom-left-radius: 0;
+            }
+            .event-date .day {
+                font-size: 2.2em;
+            }
+            .event-details {
+                padding: 20px;
+            }
+            .event-details h2 {
+                font-size: 1.5em;
+            }
+            .add-to-calendar-btn {
+                width: 100%; /* Make button full width on small screens */
+                text-align: center;
+            }
+            .info-row {
+                flex-direction: column; /* Stack label and value */
+                align-items: flex-start;
+            }
+            .info-row .label {
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="event-container">
+        <div class="event-date">
+            <div class="month">Jul</div>
+            <div class="day">21</div>
+            <div class="weekday">Mon</div>
+        </div>
+        <div class="event-details">
+            <h2>Birthday Lunch</h2>
+            <a href="#" class="view-on-calendar">View on Google Calendar</a>
+            <div class="info-row">
+                <span class="label">When:</span>
+                <span class="value">Mon Jul 21, 2014 12pm - 1pm (EDT)</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Where:</span>
+                <span class="value">TBD</span>
+            </div>
+            <a href="#download-ics" class="add-to-calendar-btn" download="BirthdayLunch.ics">
+                Add to Calendar
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -66,3 +66,184 @@
     @apply text-neutral-100 hover:bg-gray-800 focus:bg-gray-800;
   }
 }
+
+/* Event Card Component Styling */
+.event-container {
+  display: flex;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-smooth: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark .event-container {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+/* Styling for the date section on the left */
+.event-date {
+  background-color: #4A8CF7;
+  color: white;
+  padding: 25px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  border-top-left-radius: 11px;
+  border-bottom-left-radius: 11px;
+}
+
+.event-date .month {
+  font-size: 0.9em;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.event-date .day {
+  font-size: 2.8em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.event-date .weekday {
+  font-size: 0.9em;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* Styling for the event details section on the right */
+.event-details {
+  padding: 25px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-details h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.dark .event-details h2 {
+  color: #f1f5f9;
+}
+
+.event-details .view-on-calendar {
+  font-size: 0.9em;
+  color: #3498db;
+  text-decoration: none;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.dark .event-details .view-on-calendar {
+  color: #60a5fa;
+}
+
+.event-details .view-on-calendar:hover {
+  text-decoration: underline;
+}
+
+/* Styling for rows of information (When, Where) */
+.info-row {
+  margin-bottom: 12px;
+  font-size: 0.95em;
+  color: #555e68;
+  display: flex;
+  align-items: flex-start;
+}
+
+.dark .info-row {
+  color: #cbd5e1;
+}
+
+.info-row .label {
+  font-weight: 600;
+  margin-right: 8px;
+  color: #34495e;
+  min-width: 60px;
+}
+
+.dark .info-row .label {
+  color: #e2e8f0;
+}
+
+.info-row .value {
+  flex: 1;
+}
+
+/* Styling for the "Add to Calendar" button */
+.add-to-calendar-btn {
+  display: inline-block;
+  background-color: #27ae60;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 500;
+  margin-top: auto;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  align-self: flex-start;
+}
+
+.add-to-calendar-btn:hover {
+  background-color: #229954;
+  transform: translateY(-1px);
+}
+
+.add-to-calendar-btn:active {
+  background-color: #1e8449;
+  transform: translateY(0px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .event-container {
+    flex-direction: column;
+  }
+  .event-date {
+    min-width: auto;
+    width: 100%;
+    padding: 15px;
+    border-top-right-radius: 11px;
+    border-bottom-left-radius: 0;
+  }
+  .event-date .day {
+    font-size: 2.2em;
+  }
+  .event-details {
+    padding: 20px;
+  }
+  .event-details h2 {
+    font-size: 1.3rem;
+  }
+  .add-to-calendar-btn {
+    width: 100%;
+    text-align: center;
+  }
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .info-row .label {
+    margin-bottom: 4px;
+  }
+}

@@ -5,12 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Check, Loader2 } from "lucide-react";
+import { Check, Loader2, Calendar, MapPin, ExternalLink } from "lucide-react";
 import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { waitlistFormSchema } from "@shared/schema";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
 import { useParishes } from "@/hooks/use-parishes";
+import { format } from "date-fns";
 
 import {
   Form,
@@ -114,7 +115,7 @@ export function WaitlistForm() {
         variants={staggerContainer}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
+        viewport={{ once: true, amount: 0 }}
         className="container mx-auto px-4"
       >
         <motion.div 
@@ -123,7 +124,7 @@ export function WaitlistForm() {
         >
           <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Register for Our Event</h2>
           <p className="text-lg text-neutral-600 dark:text-neutral-400">
-            Join us for an exclusive AI event with industry leaders and networking opportunities.
+            Join us for an exclusive Tech event with industry leaders and networking opportunities.
           </p>
         </motion.div>
         
@@ -341,21 +342,62 @@ export function WaitlistForm() {
                 </form>
               </Form>
             ) : (
-              <div className="py-10 text-center">
-                <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Check className="text-green-500 dark:text-green-400 h-6 w-6" />
+              <div className="py-10">
+                <div className="text-center mb-8">
+                  <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Check className="text-green-500 dark:text-green-400 h-6 w-6" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Registration Confirmed!</h3>
+                  <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+                    Thank you for registering for our event. Your spot is reserved!
+                  </p>
                 </div>
-                <h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Registration Confirmed!</h3>
-                <p className="text-neutral-600 dark:text-neutral-400 mb-6">
-                  Thank you for registering for our event. We'll be in touch soon with event details.
-                </p>
-                <Button 
-                  onClick={resetForm} 
-                  variant="ghost" 
-                  className="text-accent hover:text-accent-dark font-medium"
-                >
-                  Back to Form
-                </Button>
+                
+                {/* Event Card Component */}
+                <div className="event-container mb-8">
+                  <div className="event-date">
+                    <div className="month">May</div>
+                    <div className="day">10</div>
+                    <div className="weekday">Fri</div>
+                  </div>
+                  <div className="event-details">
+                    <h2>The Screen AI Launch Event</h2>
+                    <a href="#" className="view-on-calendar">
+                      Add to calendar <ExternalLink className="h-3 w-3 inline-block ml-1" />
+                    </a>
+                    <div className="info-row">
+                      <span className="label">When:</span>
+                      <span className="value">Friday, May 10, 2025 12:00 PM - 4:00 PM (Jamaica Time)</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="label">Where:</span>
+                      <span className="value">AI Academy | AC Hotel Kingston<br />38-42 Lady Musgrave Rd, Kingston 5, Jamaica</span>
+                    </div>
+                    <a 
+                      href="#" 
+                      className="add-to-calendar-btn"
+                      onClick={() => {
+                        // Create calendar event
+                        toast({
+                          title: "Calendar event created",
+                          description: "The event has been added to your calendar",
+                        });
+                      }}
+                    >
+                      Add to Calendar
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    onClick={resetForm} 
+                    variant="outline" 
+                    className="text-accent hover:text-accent-dark font-medium"
+                  >
+                    Back to Form
+                  </Button>
+                </div>
               </div>
             )}
           </motion.div>
