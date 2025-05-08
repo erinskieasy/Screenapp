@@ -9,11 +9,7 @@ import { useTheme } from "next-themes";
 import intellibusLogo from "../assets/intellibus-logo.png";
 import { motion, AnimatePresence } from "framer-motion";
 
-interface NavbarProps {
-  isMediaLoaded?: boolean;
-}
-
-export function Navbar({ isMediaLoaded = false }: NavbarProps) {
+export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { getSetting } = useSettings();
@@ -41,13 +37,12 @@ export function Navbar({ isMediaLoaded = false }: NavbarProps) {
     <AnimatePresence>
       <motion.header
         initial={{ y: -100 }}
-        animate={{ y: isMediaLoaded ? 0 : -100 }}
+        animate={{ y: 0 }}
         transition={{
           type: "spring",
           stiffness: 260,
           damping: 20,
-          bounce: 0.5,
-          delay: 0.2
+          bounce: 0.5
         }}
         className="fixed top-4 left-0 right-0 w-full z-50 flex justify-center"
       >

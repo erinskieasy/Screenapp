@@ -6,12 +6,10 @@ import { WaitlistForm } from "@/components/waitlist-form";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
-  const [isHeroLoaded, setIsHeroLoaded] = useState(false);
-  
   return (
     <div className="font-sans text-neutral-800 bg-white">
-      <Navbar isMediaLoaded={isHeroLoaded} />
-      <HeroSection onMediaLoad={() => setIsHeroLoaded(true)} />
+      <Navbar />
+      <HeroSection />
       <WaitlistForm />
       {/* <ValueProposition /> */}
       {/* <BenefitsSection /> */}
