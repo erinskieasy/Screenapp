@@ -7,6 +7,7 @@ import { useSettings } from "@/hooks/use-settings";
 import { useLoading } from "@/hooks/use-loading-context";
 import { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import heroBackground from "../assets/hero-background.jpeg";
 
 // Logo Ticker Component
 function LogoTicker() {
@@ -172,24 +173,49 @@ export function HeroSection() {
   const heroTitle = getSetting("heroTitle", "Find the Job That Finds You.");
   const heroSubtitle = getSetting("heroSubtitle", "Let AI match you with your next software engineering opportunity.");
 
-  useEffect(() => {
-    // Simulate media loading to provide a smooth experience
-    console.log('[Hero Section] Simulating media load');
-    const timer = setTimeout(() => {
-      setIsMediaLoaded(true);
-      
-      // Delay changing the loading state to allow for smooth animation
-      setTimeout(() => {
-        console.log('[Hero Section] Setting loading complete');
-        setIsLoading(false);
-      }, 500);
-    }, 1000); // Short delay to show loading indicator
+  // Get hero background media if it exists
+  const heroBackgroundMedia = getSetting("heroBackgroundImage");
 
-    return () => clearTimeout(timer);
-  }, [setIsMediaLoaded, setIsLoading]);
+  // Determine media type synchronously
+  const isVideo = heroBackgroundMedia ? 
+    ['mp4', 'webm', 'mov', 'ogg'].includes(heroBackgroundMedia.split('.').pop()?.toLowerCase() || '') : 
+    false;
+
+  // Import dynamically loaded media if available
+  const determineBackgroundMedia = () => {
+    if (!heroBackgroundMedia) {
+      return heroBackground;
+    }
+
+    try {
+      // If we have a stored media path, use it
+      // For media uploaded through the admin panel, it will be in the assets directory
+      // and accessible via the /image route
+      return `/image/${heroBackgroundMedia}`;
+    } catch (e) {
+      console.error("Error loading background media:", e);
+      return heroBackground;
+    }
+  };
+
+  const backgroundMediaUrl = determineBackgroundMedia();
+
+  // Fallback in case media doesn't load
+  useEffect(() => {
+    // Set a timeout to ensure we don't wait forever for media to load
+    const fallbackTimer = setTimeout(() => {
+      if (!isMediaLoaded) {
+        console.log('[Hero Section] Media load timeout - forcing load completion');
+        setIsMediaLoaded(true);
+        setIsLoading(false);
+      }
+    }, 5000); // 5 seconds fallback
+
+    return () => clearTimeout(fallbackTimer);
+  }, [isMediaLoaded, setIsMediaLoaded, setIsLoading]);
 
   return (
-    <section className="h-[99vh] relative flex items-center rounded-2xl overflow-hidden mx-1 my-1">
+    <section className="h-[99vh] relative bg-slate-900 flex items-center rounded-2xl overflow-hidden mx-1 my-1">
       {/* Loading State */}
       <div 
         className={`absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-900 z-50 transition-opacity duration-700 ${isMediaLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
@@ -199,16 +225,40 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 z-0">
-        {/* Animated gradient overlay for visual interest */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 animate-pulse" style={{ animationDuration: '8s' }}></div>
+      {/* Background Media with Overlay */}
+      {isVideo ? (
+        <div className={`absolute inset-0 z-0 overflow-hidden transition-opacity duration-500 ${isMediaLoaded ? 'opacity-100' : 'opacity-0'}`}>
+          <video 
+            className="absolute top-0 left-0 min-w-full min-h-full object-cover"
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            src={backgroundMediaUrl}
+            onLoadedData={() => {
+              setIsMediaLoaded(true);
+              setTimeout(() => setIsLoading(false), 500); // Delay to ensure the loading overlay fades out smoothly
+            }}
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         </div>
-        
-        {/* Grain texture overlay */}
-        <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]"></div>
-      </div>
+      ) : (
+        <div 
+          className={`absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500 ${isMediaLoaded ? 'opacity-100' : 'opacity-0'}`}
+          style={{ backgroundImage: `url(${backgroundMediaUrl})` }}
+        >
+          <img 
+            src={backgroundMediaUrl}
+            alt="Background"
+            className="hidden"
+            onLoad={() => {
+              setIsMediaLoaded(true);
+              setTimeout(() => setIsLoading(false), 500); // Delay to ensure the loading overlay fades out smoothly
+            }}
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        </div>
+      )}
 
       <motion.div
         variants={staggerContainer}
