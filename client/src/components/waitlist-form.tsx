@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Check, Loader2, Calendar, MapPin } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { waitlistFormSchema } from "@shared/schema";
 import { fadeIn, staggerContainer } from "@/lib/animations";
@@ -128,9 +128,83 @@ export function WaitlistForm() {
         </motion.div>
         
         <div className="grid md:grid-cols-2 gap-8">
-          {/* Waitlist Form - Left Column */}
-          <motion.div 
+          {/* Event Details - Left Column */}
+          <motion.div
             variants={fadeIn("right", 0.3)}
+            className="flex flex-col"
+          >
+            <div className="relative rounded-lg overflow-hidden shadow-lg mb-6 h-64 md:h-72">
+              <img 
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+                alt="AI Conference keynote presentation" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-accent/50"></div>
+              <div className="absolute top-0 left-0 m-4">
+                <div className="bg-accent/90 px-4 py-1 rounded-full">
+                  <p className="text-white font-medium uppercase tracking-wide text-sm">AI PIONEER</p>
+                </div>
+              </div>
+              <div className="absolute bottom-0 left-0 p-6">
+                <h3 className="text-3xl font-bold text-white mb-2 drop-shadow-md">EVENT 2025</h3>
+              </div>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-neutral-100 dark:border-gray-700 p-6 flex-grow">
+              <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Event Details</h3>
+              
+              <div className="space-y-6">
+                <div className="flex items-start">
+                  <div className="text-accent text-xl mr-4">
+                    <FaCalendarAlt />
+                  </div>
+                  <div>
+                    <p className="text-neutral-900 dark:text-neutral-100 font-medium text-lg">May 10</p>
+                    <p className="text-neutral-600 dark:text-neutral-400">12 PM - 4 PM (JAMAICA TIME)</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="text-accent text-xl mr-4">
+                    <FaMapMarkerAlt />
+                  </div>
+                  <div>
+                    <p className="text-neutral-900 dark:text-neutral-100 font-medium text-lg">AI Academy | AC Hotel Kingston</p>
+                    <p className="text-neutral-600 dark:text-neutral-400">38-42 Lady Musgrave Rd, Kingston 5, Jamaica</p>
+                  </div>
+                </div>
+                
+                <div className="pt-4 space-y-4">
+                  <h4 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">What to Expect:</h4>
+                  <p className="text-neutral-600 dark:text-neutral-400">
+                    Are you a Pioneer Software Dev, ready to change the world with tech? Then this is the event you've been waiting for.</p>
+                    <p className="text-neutral-600 dark:text-neutral-400">
+                    Step into the future at The Screen Launch, the premiere gathering for AI pioneers—a vibrant fusion of networking, innovation, and real-world breakthroughs.
+                  </p>
+                  <h4 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">What to Bring:</h4>
+                  <ul className="list-disc list-inside text-neutral-700 dark:text-neutral-300 space-y-2 pl-1">
+                    <li>Laptop or tablet (charged and ready)</li>
+                    <li>Mobile phone with internet access</li>
+                    <li>Government-issued photo ID</li>
+                  </ul>
+                </div>
+                
+                <div className="pt-2 flex space-x-4">
+                  <button 
+                    onClick={() => document.getElementById('registration-form')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="inline-block bg-accent hover:bg-accent-dark text-white font-medium px-6 py-3 rounded-md shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1"
+                  >
+                    Register Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Registration Form - Right Column */}
+          <motion.div 
+            id="registration-form"
+            variants={fadeIn("left", 0.4)}
             className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg border border-neutral-100 dark:border-gray-700"
           >
             <div className="mb-6">
@@ -273,15 +347,7 @@ export function WaitlistForm() {
                 </div>
                 <h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Registration Confirmed!</h3>
                 <p className="text-neutral-600 dark:text-neutral-400 mb-6">
-                  This isn't your average meet-and-greet. This is your launchpad.
-                  Come Prepared:
-                  Laptop or tablet (charged and ready)
-                  Mobile phone with internet access
-                  Government-issued photo ID
-
-
-                  This is a high-opportunity zone. Expect insight. Expect access. Expect to be seen.
-
+                  Thank you for registering for our event. We'll be in touch soon with event details.
                 </p>
                 <Button 
                   onClick={resetForm} 
@@ -292,79 +358,6 @@ export function WaitlistForm() {
                 </Button>
               </div>
             )}
-          </motion.div>
-          
-          {/* Event Details - Right Column */}
-          <motion.div
-            variants={fadeIn("left", 0.4)}
-            className="flex flex-col"
-          >
-            <div className="relative rounded-lg overflow-hidden shadow-lg mb-6 h-64 md:h-72">
-              <img 
-                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
-                alt="AI Conference keynote presentation" 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-accent/50"></div>
-              <div className="absolute top-0 left-0 m-4">
-                <div className="bg-accent/90 px-4 py-1 rounded-full">
-                  <p className="text-white font-medium uppercase tracking-wide text-sm">AI PIONEER</p>
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 p-6">
-                <h3 className="text-3xl font-bold text-white mb-2 drop-shadow-md">EVENT 2025</h3>
-              </div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-neutral-100 dark:border-gray-700 p-6 flex-grow">
-              <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Event Details</h3>
-              
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="text-accent text-xl mr-4">
-                    <FaCalendarAlt />
-                  </div>
-                  <div>
-                    <p className="text-neutral-900 dark:text-neutral-100 font-medium text-lg">May 10</p>
-                    <p className="text-neutral-600 dark:text-neutral-400">12 PM - 4 PM (JAMAICA TIME)</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="text-accent text-xl mr-4">
-                    <FaMapMarkerAlt />
-                  </div>
-                  <div>
-                    <p className="text-neutral-900 dark:text-neutral-100 font-medium text-lg">AI Academy | AC Hotel Kingston</p>
-                    <p className="text-neutral-600 dark:text-neutral-400">38-42 Lady Musgrave Rd, Kingston 5, Jamaica</p>
-                  </div>
-                </div>
-                
-                <div className="pt-4 space-y-4">
-                  <h4 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">What to Expect:</h4>
-                  <p className="text-neutral-600 dark:text-neutral-400">
-                    Are you a Pioneer Software Dev, ready to change the world with tech? Then this is the event you’ve been waiting for.</p>
-                    <p className="text-neutral-600 dark:text-neutral-400">
-                    Step into the future at The Screen Launch, the premiere gathering for AI pioneers—a vibrant fusion of networking, innovation, and real-world breakthroughs. Rub shoulders with talent scouts, recruiters, and decision-makers from Fortune 500 tech giants and bold international startups hungry for fresh minds like yours.
-                  </p>
-                  <h4 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">What to Bring:</h4>
-                  <ul className="list-disc list-inside text-neutral-700 dark:text-neutral-300 space-y-2 pl-1">
-                    <li>Laptop or tablet (charged and ready)</li>
-                    <li>Mobile phone with internet access</li>
-                    <li>Government-issued photo ID</li>
-                  </ul>
-                </div>
-                
-                <div className="pt-2 flex space-x-4">
-                  <button 
-                    onClick={() => document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="inline-block bg-accent hover:bg-accent-dark text-white font-medium px-6 py-3 rounded-md shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1"
-                  >
-                    Register Now
-                  </button>
-                </div>
-              </div>
-            </div>
           </motion.div>
         </div>
       </motion.div>
