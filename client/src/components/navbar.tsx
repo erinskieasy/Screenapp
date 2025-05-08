@@ -38,16 +38,16 @@ export function Navbar() {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-4xl z-50"
+        className="fixed top-4 left-0 right-0 w-full z-50 flex justify-center"
       >
         <motion.div
           className={`
-            rounded-2xl backdrop-blur-lg
+            rounded-2xl backdrop-blur-lg w-[95%] max-w-4xl
             ${isScrolled ? 'bg-white/90 dark:bg-gray-950/90 shadow-lg' : 'bg-white/50 dark:bg-gray-950/50'}
             transition-all duration-300
           `}
         >
-          <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="w-full px-6 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-center">
               {logoToUse ? (
                 <img 
@@ -106,7 +106,7 @@ export function Navbar() {
                 exit={{ opacity: 0, height: 0 }}
                 className="md:hidden border-t border-neutral-100 dark:border-gray-800"
               >
-                <div className="container mx-auto px-4 py-2 space-y-3">
+                <div className="w-full px-4 py-2 space-y-3">
                   <ScrollTo
                     targetId="join"
                     className="block py-2 text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary"
