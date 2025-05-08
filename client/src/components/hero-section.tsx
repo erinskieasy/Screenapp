@@ -272,7 +272,7 @@ export function HeroSection() {
                   appEventBus.emit('prefillEmail', emailInput);
                 }
                 console.log('[Hero Form] Scrolling to waitlist form');
-                document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('registration-form')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
               <div className="relative flex w-full max-w-md items-center gap-2 py-2 pr-2 pl-4 rounded-xl bg-white transition-[box-shadow] duration-350 ease-in-out shadow-[var(--shadow-default)] hover:shadow-[var(--shadow-hover)] has-[input:focus]:shadow-[var(--shadow-focus)]" 
