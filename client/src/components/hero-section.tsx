@@ -184,18 +184,9 @@ export function HeroSection() {
   // Import dynamically loaded media if available
   const determineBackgroundMedia = () => {
     if (!heroBackgroundMedia) {
-      return heroBackground;
+      return null;
     }
-
-    try {
-      // If we have a stored media path, use it
-      // For media uploaded through the admin panel, it will be in the assets directory
-      // and accessible via the /image route
-      return `/image/${heroBackgroundMedia}`;
-    } catch (e) {
-      console.error("Error loading background media:", e);
-      return heroBackground;
-    }
+    return `/image/${heroBackgroundMedia}`;
   };
 
   const backgroundMediaUrl = determineBackgroundMedia();
@@ -245,13 +236,14 @@ export function HeroSection() {
       ) : (
         <div 
           className={`absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500 ${isMediaLoaded ? 'opacity-100' : 'opacity-0'}`}
-          style={{ backgroundImage: `url(${backgroundMediaUrl})` }}
+          style={{ backgroundImage: backgroundMediaUrl ? `url(${backgroundMediaUrl})` : 'none' }}
         >
-          <img 
-            src={backgroundMediaUrl}
-            alt="Background"
-            className="hidden"
-            onLoad={() => {
+          {backgroundMediaUrl && (
+            <img 
+              src={backgroundMediaUrl}
+              alt="Background"
+              className="hidden"
+              onLoad={() => {
               setIsMediaLoaded(true);
               setTimeout(() => setIsLoading(false), 500); // Delay to ensure the loading overlay fades out smoothly
             }}
