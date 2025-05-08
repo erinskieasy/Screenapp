@@ -5,6 +5,7 @@ import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
 import { AdminNavbar } from "@/components/admin-navbar";
 import { useToast } from "@/hooks/use-toast";
 import { useAllParishes } from "@/hooks/use-parishes";
+import { useDeleteWaitlistEntry } from "@/hooks/use-waitlist";
 import { EmailTemplatesTab } from "@/components/email-templates-tab";
 import { EmailCampaignsTab } from "@/components/email-campaigns-tab";
 import { EmailLogsTab } from "@/components/email-logs-tab";
@@ -32,6 +33,17 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   LogOut,
   Save,
   Download,
@@ -51,6 +63,7 @@ import {
 export default function AdminDashboard() {
   const { user, logoutMutation } = useAuth();
   const { toast } = useToast();
+  const { mutate: deleteWaitlistEntry } = useDeleteWaitlistEntry();
   const [activeTab, setActiveTab] = useState("hero");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -475,6 +488,25 @@ export default function AdminDashboard() {
     if (confirm("Are you sure you want to delete this parish?")) {
       deleteParishMutation.mutate(id);
     }
+  };
+  
+  const handleDeleteWaitlistEntry = (id: number) => {
+    deleteWaitlistEntry(id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["/api/waitlist"] });
+        toast({
+          title: "Entry deleted",
+          description: "The waitlist entry has been removed successfully."
+        });
+      },
+      onError: (error: Error) => {
+        toast({
+          title: "Deletion failed",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
+    });
   };
 
   const isLoading =
