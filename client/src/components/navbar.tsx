@@ -67,7 +67,7 @@ export function Navbar() {
 
             <nav className="hidden md:flex items-center space-x-6">
               <ScrollTo targetId="join" className="inline-flex items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-800 dark:hover:bg-gray-200">
-                Join Waitlist
+                Register Now
               </ScrollTo>
               <ThemeToggle />
             </nav>
@@ -112,7 +112,7 @@ export function Navbar() {
                     className="block py-2 text-neutral-600 dark:text-neutral-300 hover:text-primary dark:hover:text-primary"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Join Waitlist
+                    Register Now
                   </ScrollTo>
                   
                   <div className="py-2 border-t border-neutral-100 dark:border-gray-800 mt-1">
