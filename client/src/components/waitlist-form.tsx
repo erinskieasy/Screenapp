@@ -116,7 +116,7 @@ export function WaitlistForm() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0 }}
-        className="container mx-auto px-4"
+        className="container mx-auto px-4 md:px-8 lg:px-16 xl:px-24"
       >
         <motion.div 
           variants={fadeIn("up", 0.2)}
