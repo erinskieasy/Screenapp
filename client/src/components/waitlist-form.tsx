@@ -362,7 +362,7 @@ export function WaitlistForm() {
                   </div>
                   <div className="event-details">
                     <h2>The Screen AI Launch Event</h2>
-                    <a href="#" className="view-on-calendar">
+                    <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Intellibus+Pioneer+AI+Network+Event&dates=20250510T170000Z/20250510T220000Z&details=Are+you+a+Pioneer+Software+Dev%2C+ready+to+change+the+world+with+tech%3F+Then+this+is+the+event+you%E2%80%99ve+been+waiting+for.%0A%0AStep+into+the+future+at+The+Screen+Launch%2C+the+premiere+gathering+for+AI+pioneers%E2%80%94a+vibrant+fusion+of+networking%2C+innovation%2C+and+real-world+breakthroughs.+Rub+shoulders+with+talent+scouts%2C+recruiters%2C+and+decision-makers+from+Fortune+500+tech+giants+and+bold+international+startups+hungry+for+fresh+minds+like+yours.%0A%0AThis+isn%27t+your+average+meet-and-greet.+This+is+your+launchpad.%0A%0ACome+Prepared%3A%0A%E2%9C%94+Laptop+or+tablet+%28charged+and+ready%29%0A%E2%9C%94+Mobile+phone+with+internet+access%0A%E2%9C%94+Government-issued+photo+ID%0A%0AThis+is+a+high-opportunity+zone.+Expect+insight.+Expect+access.+Expect+to+be+seen.&location=AC+Hotel+Kingston%2C+Jamaica%2C+38-42+Lady+Musgrave+Rd%2C+Kingston%2C+Jamaica" className="view-on-calendar">
                       Add to calendar <ExternalLink className="h-3 w-3 inline-block ml-1" />
                     </a>
                     <div className="info-row">
@@ -374,7 +374,7 @@ export function WaitlistForm() {
                       <span className="value">AI Academy | AC Hotel Kingston<br />38-42 Lady Musgrave Rd, Kingston 5, Jamaica</span>
                     </div>
                     <a 
-                      href="#" 
+                      href="https://www.google.com/calendar/render?action=TEMPLATE&text=Intellibus+Pioneer+AI+Network+Event&dates=20250510T170000Z/20250510T220000Z&details=Are+you+a+Pioneer+Software+Dev%2C+ready+to+change+the+world+with+tech%3F+Then+this+is+the+event+you%E2%80%99ve+been+waiting+for.%0A%0AStep+into+the+future+at+The+Screen+Launch%2C+the+premiere+gathering+for+AI+pioneers%E2%80%94a+vibrant+fusion+of+networking%2C+innovation%2C+and+real-world+breakthroughs.+Rub+shoulders+with+talent+scouts%2C+recruiters%2C+and+decision-makers+from+Fortune+500+tech+giants+and+bold+international+startups+hungry+for+fresh+minds+like+yours.%0A%0AThis+isn%27t+your+average+meet-and-greet.+This+is+your+launchpad.%0A%0ACome+Prepared%3A%0A%E2%9C%94+Laptop+or+tablet+%28charged+and+ready%29%0A%E2%9C%94+Mobile+phone+with+internet+access%0A%E2%9C%94+Government-issued+photo+ID%0A%0AThis+is+a+high-opportunity+zone.+Expect+insight.+Expect+access.+Expect+to+be+seen.&location=AC+Hotel+Kingston%2C+Jamaica%2C+38-42+Lady+Musgrave+Rd%2C+Kingston%2C+Jamaica" 
                       className="add-to-calendar-btn"
                       onClick={() => {
                         // Create calendar event

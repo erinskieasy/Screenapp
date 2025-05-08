@@ -60,15 +60,15 @@ export function Footer() {
             </Link>
             
             <div className="flex flex-col md:flex-row md:space-x-8 space-y-4 md:space-y-0 mb-6 md:mb-0 items-center">
-              <Link href="#" className="text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="#" className="text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="#" className="text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors">
-                Contact Us
-              </Link>
+              {/* <Link href="#" className="text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors"> */}
+                {/* Privacy Policy */}
+              {/* </Link> */}
+              {/* <Link href="#" className="text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors"> */}
+                {/* Terms of Service */}
+              {/* </Link> */}
+              {/* <Link href="#" className="text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors"> */}
+                {/* Contact Us */}
+              {/* </Link> */}
               <Link href="/admin" className="text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors">
                 Admin
               </Link>
