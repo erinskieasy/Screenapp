@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollTo } from "@/components/ui/scroll-to";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useSettings } from "@/hooks/use-settings";
+import { useLoading } from "@/hooks/use-loading-context";
 import { useTheme } from "next-themes";
 import intellibusLogo from "../assets/intellibus-logo.png";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,8 +13,10 @@ import { motion, AnimatePresence } from "framer-motion";
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [navbarVisible, setNavbarVisible] = useState(false);
   const { getSetting } = useSettings();
   const { theme } = useTheme();
+  const { isLoading } = useLoading();
 
   const siteName = getSetting("siteName", "Screen App");
   const lightLogo = getSetting("siteLogo");
@@ -32,17 +35,33 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  
+  // Handle animation timing based on page loading state
+  useEffect(() => {
+    console.log('[Navbar] Loading state changed:', isLoading);
+    
+    if (!isLoading) {
+      // Wait a bit after content is loaded to show the navbar for a smooth sequence
+      const timer = setTimeout(() => {
+        console.log('[Navbar] Showing navbar after page load');
+        setNavbarVisible(true);
+      }, 300); // Slight delay for better visual sequence
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
 
   return (
     <AnimatePresence>
       <motion.header
         initial={{ y: -100 }}
-        animate={{ y: 0 }}
+        animate={{ y: navbarVisible ? 0 : -100 }}
         transition={{
           type: "spring",
           stiffness: 260,
           damping: 20,
-          bounce: 0.5
+          bounce: 0.5,
+          delay: navbarVisible ? 0.1 : 0 // Small delay when showing
         }}
         className="fixed top-4 left-0 right-0 w-full z-50 flex justify-center"
       >
