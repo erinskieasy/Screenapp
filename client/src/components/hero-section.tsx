@@ -220,7 +220,10 @@ export function HeroSection() {
             loop 
             playsInline
             src={backgroundMediaUrl}
-            onLoadedData={() => setIsMediaLoaded(true)}
+            onLoadedData={() => {
+              setIsMediaLoaded(true);
+              onMediaLoad?.();
+            }}
           />
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         </div>
